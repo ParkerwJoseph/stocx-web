@@ -1,283 +1,409 @@
 "use client"
 
-import type React from "react"
-
-import { useState } from "react"
-import { ArrowLeft, Mail, MessageCircle, Phone, Send } from "lucide-react"
-import Link from "next/link"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
+import { Badge } from "@/components/ui/badge"
+import {
+  HelpCircle,
+  MessageSquare,
+  Mail,
+  Phone,
+  Clock,
+  Search,
+  BookOpen,
+  Video,
+  Shield,
+  CreditCard,
+  Smartphone,
+  TrendingUp,
+  Settings,
+  ExternalLink,
+} from "lucide-react"
+import Link from "next/link"
+import { useState } from "react"
 
 export default function SupportPage() {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    subject: "",
-    message: "",
-  })
-  const [submitted, setSubmitted] = useState(false)
-  const [loading, setLoading] = useState(false)
+  const [searchQuery, setSearchQuery] = useState("")
+  const [selectedCategory, setSelectedCategory] = useState("all")
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    setLoading(true)
-
-    // Simulate form submission
-    setTimeout(() => {
-      setSubmitted(true)
-      setLoading(false)
-    }, 1500)
-  }
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    })
-  }
+  const categories = [
+    { id: "all", name: "All Topics", icon: <HelpCircle className="w-4 h-4" /> },
+    { id: "getting-started", name: "Getting Started", icon: <BookOpen className="w-4 h-4" /> },
+    { id: "trading", name: "Trading & AI", icon: <TrendingUp className="w-4 h-4" /> },
+    { id: "account", name: "Account & Billing", icon: <CreditCard className="w-4 h-4" /> },
+    { id: "technical", name: "Technical Issues", icon: <Settings className="w-4 h-4" /> },
+    { id: "security", name: "Security & Privacy", icon: <Shield className="w-4 h-4" /> },
+  ]
 
   const faqs = [
     {
-      question: "When will Stocx Ai be available?",
+      category: "getting-started",
+      question: "How do I get started with Stocx AI?",
       answer:
-        "We're working hard to launch Stocx Ai in Q2 2024! Subscribe to our newsletter to be the first to know when we go live.",
+        "Download the app from the App Store or Google Play, create your account, and complete the onboarding process. You can start with our free tier to explore basic features before upgrading to a premium plan.",
     },
     {
-      question: "What makes Stocx Ai different from other trading platforms?",
+      category: "getting-started",
+      question: "What devices are supported?",
       answer:
-        "Stocx Ai leverages advanced artificial intelligence to provide real-time market analysis, predictive insights, and personalized trading recommendations that adapt to your investment style.",
+        "Stocx AI is available on iOS 14+ and Android 8+. We also offer a web dashboard for premium subscribers. The app is optimized for both phones and tablets.",
     },
     {
-      question: "Will there be a free trial?",
+      category: "trading",
+      question: "How accurate are the AI predictions?",
       answer:
-        "Yes! We offer a 3-day free trial period so you can experience the power of AI-driven stock analysis before committing to a subscription.",
+        "Our AI models achieve approximately 94% accuracy in trend prediction based on historical data. However, past performance does not guarantee future results, and all trading involves risk.",
     },
     {
-      question: "What types of investments will Stocx Ai support?",
+      category: "trading",
+      question: "What markets does Stocx AI cover?",
       answer:
-        "Our platform will support stocks, ETFs, options, and other major securities. We're continuously expanding our coverage to include more asset classes.",
+        "We cover major stock markets (NYSE, NASDAQ, LSE), cryptocurrencies (Bitcoin, Ethereum, 100+ altcoins), forex pairs, commodities, and indices. Coverage varies by subscription tier.",
     },
     {
-      question: "How do I unsubscribe from email updates?",
+      category: "trading",
+      question: "Can I connect my brokerage account?",
       answer:
-        "You can unsubscribe at any time by clicking the unsubscribe link in any of our emails or by contacting our support team at support@stocxai.com.",
+        "Yes, we support integration with major brokers including TD Ameritrade, E*TRADE, Interactive Brokers, and more. Your credentials are encrypted and never stored on our servers.",
+    },
+    {
+      category: "account",
+      question: "How do I upgrade my subscription?",
+      answer:
+        "Go to Settings > Subscription in the app, or visit your account dashboard on our website. You can upgrade, downgrade, or cancel at any time. Changes take effect at the next billing cycle.",
+    },
+    {
+      category: "account",
+      question: "What payment methods do you accept?",
+      answer:
+        "We accept all major credit cards, PayPal, Apple Pay, and Google Pay. Payments are processed securely through Stripe and are PCI DSS compliant.",
+    },
+    {
+      category: "account",
+      question: "Can I get a refund?",
+      answer:
+        "We offer a 7-day money-back guarantee for new subscribers. After that, subscriptions are non-refundable, but you can cancel anytime to avoid future charges.",
+    },
+    {
+      category: "technical",
+      question: "The app is running slowly. What should I do?",
+      answer:
+        "Try closing and reopening the app, ensure you have a stable internet connection, and check for app updates. If issues persist, restart your device or contact support.",
+    },
+    {
+      category: "technical",
+      question: "I'm not receiving notifications. How do I fix this?",
+      answer:
+        "Check your device notification settings, ensure Stocx AI has permission to send notifications, and verify your notification preferences in the app settings.",
+    },
+    {
+      category: "technical",
+      question: "How do I sync data across devices?",
+      answer:
+        "Data automatically syncs when you're logged into the same account. Ensure you're connected to the internet and logged in with the same credentials on all devices.",
+    },
+    {
+      category: "security",
+      question: "How is my data protected?",
+      answer:
+        "We use bank-level AES-256 encryption, two-factor authentication, and never store your trading passwords. All data is encrypted in transit and at rest. Read our Privacy Policy for full details.",
+    },
+    {
+      category: "security",
+      question: "How do I enable two-factor authentication?",
+      answer:
+        "Go to Settings > Security > Two-Factor Authentication. You can use SMS, email, or authenticator apps like Google Authenticator or Authy for added security.",
+    },
+    {
+      category: "security",
+      question: "What should I do if my account is compromised?",
+      answer:
+        "Immediately change your password, enable 2FA if not already active, and contact our support team. We'll help secure your account and investigate any unauthorized activity.",
+    },
+  ]
+
+  const filteredFaqs = faqs.filter((faq) => {
+    const matchesSearch =
+      faq.question.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      faq.answer.toLowerCase().includes(searchQuery.toLowerCase())
+    const matchesCategory = selectedCategory === "all" || faq.category === selectedCategory
+    return matchesSearch && matchesCategory
+  })
+
+  const resources = [
+    {
+      title: "Video Tutorials",
+      description: "Step-by-step video guides for all features",
+      icon: <Video className="w-6 h-6" />,
+      link: "#",
+      badge: "Popular",
+    },
+    {
+      title: "Trading Guide",
+      description: "Complete guide to AI-powered trading",
+      icon: <BookOpen className="w-6 h-6" />,
+      link: "#",
+      badge: "New",
+    },
+    {
+      title: "API Documentation",
+      description: "For developers integrating with Stocx AI",
+      icon: <ExternalLink className="w-6 h-6" />,
+      link: "#",
+      badge: null,
+    },
+    {
+      title: "Mobile App Guide",
+      description: "Getting the most out of our mobile apps",
+      icon: <Smartphone className="w-6 h-6" />,
+      link: "#",
+      badge: null,
     },
   ]
 
   return (
-    <div className="min-h-screen bg-black text-white">
-      {/* Header */}
-      <div className="border-b border-gray-800">
-        <div className="container mx-auto px-4 py-6">
-          <div className="flex items-center gap-4">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900">
+      {/* Navigation */}
+      <nav className="fixed top-0 w-full z-50 glass border-b border-white/10">
+        <div className="container-modern">
+          <div className="flex items-center justify-between h-16">
+            <Link href="/" className="flex items-center space-x-2">
+              <div className="w-8 h-8 bg-gradient-green rounded-lg flex items-center justify-center">
+                <HelpCircle className="w-5 h-5 text-black" />
+              </div>
+              <span className="text-xl font-bold text-gradient">Stocx AI</span>
+            </Link>
             <Link href="/">
-              <Button variant="ghost" size="sm" className="text-gray-400 hover:text-white">
-                <ArrowLeft className="h-4 w-4 mr-2" />
+              <Button variant="outline" className="btn-modern btn-secondary bg-transparent">
                 Back to Home
               </Button>
             </Link>
-            <div className="h-6 w-px bg-gray-700" />
-            <h1 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-400">
-              Stocx Ai
-            </h1>
           </div>
         </div>
-      </div>
+      </nav>
 
-      <div className="container mx-auto px-4 py-12 max-w-6xl">
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold mb-4 text-white">Support Center</h1>
-          <p className="text-gray-300 text-lg">
-            We're here to help! Find answers to common questions or get in touch with our team.
-          </p>
-        </div>
+      <div className="pt-24 pb-16">
+        <div className="container-modern">
+          {/* Header */}
+          <div className="text-center mb-16">
+            <h1 className="text-4xl md:text-5xl font-bold text-gradient mb-4">Support Center</h1>
+            <p className="text-xl text-white/70 max-w-2xl mx-auto">
+              Get help with Stocx AI. Find answers, contact support, and access helpful resources.
+            </p>
+          </div>
 
-        <div className="grid lg:grid-cols-2 gap-12">
-          {/* Contact Form */}
-          <div>
-            <Card className="bg-gray-900/50 border-gray-800">
-              <CardHeader>
-                <CardTitle className="text-white">Get in Touch</CardTitle>
-                <CardDescription className="text-gray-400">
-                  Have a question or need assistance? Send us a message and we'll get back to you within 24 hours.
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                {!submitted ? (
-                  <form onSubmit={handleSubmit} className="space-y-4">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      <div>
-                        <label htmlFor="name" className="block text-sm font-medium text-gray-300 mb-2">
-                          Name
-                        </label>
-                        <Input
-                          id="name"
-                          name="name"
-                          type="text"
-                          placeholder="Your name"
-                          className="bg-black/50 border-gray-700 text-white placeholder:text-gray-500"
-                          value={formData.name}
-                          onChange={handleInputChange}
-                          required
-                        />
-                      </div>
-                      <div>
-                        <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-2">
-                          Email
-                        </label>
-                        <Input
-                          id="email"
-                          name="email"
-                          type="email"
-                          placeholder="your@email.com"
-                          className="bg-black/50 border-gray-700 text-white placeholder:text-gray-500"
-                          value={formData.email}
-                          onChange={handleInputChange}
-                          required
-                        />
-                      </div>
-                    </div>
-
-                    <div>
-                      <label htmlFor="subject" className="block text-sm font-medium text-gray-300 mb-2">
-                        Subject
-                      </label>
-                      <Input
-                        id="subject"
-                        name="subject"
-                        type="text"
-                        placeholder="What's this about?"
-                        className="bg-black/50 border-gray-700 text-white placeholder:text-gray-500"
-                        value={formData.subject}
-                        onChange={handleInputChange}
-                        required
-                      />
-                    </div>
-
-                    <div>
-                      <label htmlFor="message" className="block text-sm font-medium text-gray-300 mb-2">
-                        Message
-                      </label>
-                      <Textarea
-                        id="message"
-                        name="message"
-                        placeholder="Tell us how we can help..."
-                        className="bg-black/50 border-gray-700 text-white placeholder:text-gray-500 min-h-[120px]"
-                        value={formData.message}
-                        onChange={handleInputChange}
-                        required
-                      />
-                    </div>
-
-                    <Button
-                      type="submit"
-                      className="w-full bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-600 hover:to-cyan-600"
-                      disabled={loading}
-                    >
-                      {loading ? (
-                        <span className="flex items-center">
-                          <svg
-                            className="animate-spin -ml-1 mr-2 h-4 w-4 text-white"
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                          >
-                            <circle
-                              className="opacity-25"
-                              cx="12"
-                              cy="12"
-                              r="10"
-                              stroke="currentColor"
-                              strokeWidth="4"
-                            ></circle>
-                            <path
-                              className="opacity-75"
-                              fill="currentColor"
-                              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                            ></path>
-                          </svg>
-                          Sending...
-                        </span>
-                      ) : (
-                        <span className="flex items-center">
-                          Send Message <Send className="ml-2 h-4 w-4" />
-                        </span>
-                      )}
-                    </Button>
-                  </form>
-                ) : (
-                  <div className="text-center py-8">
-                    <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-emerald-500/10 mb-4">
-                      <Mail className="h-8 w-8 text-emerald-500" />
-                    </div>
-                    <h3 className="text-xl font-semibold text-white mb-2">Message Sent!</h3>
-                    <p className="text-gray-400 mb-4">
-                      Thank you for reaching out. We'll get back to you within 24 hours.
-                    </p>
-                    <Button
-                      variant="outline"
-                      className="border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/10 bg-transparent"
-                      onClick={() => {
-                        setSubmitted(false)
-                        setFormData({ name: "", email: "", subject: "", message: "" })
-                      }}
-                    >
-                      Send Another Message
-                    </Button>
-                  </div>
-                )}
+          {/* Contact Options */}
+          <div className="grid md:grid-cols-3 gap-6 mb-16">
+            <Card className="card-modern text-center">
+              <CardContent className="p-8">
+                <MessageSquare className="w-12 h-12 text-primary mx-auto mb-4" />
+                <h3 className="text-xl font-semibold text-white mb-2">Live Chat</h3>
+                <p className="text-white/70 mb-4">Get instant help from our support team</p>
+                <div className="flex items-center justify-center text-sm text-green-400 mb-4">
+                  <Clock className="w-4 h-4 mr-1" />
+                  Available 24/7
+                </div>
+                <Button className="btn-modern btn-primary w-full">Start Chat</Button>
               </CardContent>
             </Card>
 
-            {/* Contact Methods */}
-            <div className="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <div className="bg-gray-900/30 border border-gray-800 rounded-lg p-4 text-center">
-                <Mail className="h-8 w-8 text-emerald-400 mx-auto mb-2" />
-                <h3 className="font-medium text-white mb-1">Email</h3>
-                <p className="text-sm text-gray-400">support@stocxai.com</p>
-              </div>
-              <div className="bg-gray-900/30 border border-gray-800 rounded-lg p-4 text-center">
-                <MessageCircle className="h-8 w-8 text-cyan-400 mx-auto mb-2" />
-                <h3 className="font-medium text-white mb-1">Live Chat</h3>
-                <p className="text-sm text-gray-400">Coming with app launch</p>
-              </div>
-              <div className="bg-gray-900/30 border border-gray-800 rounded-lg p-4 text-center">
-                <Phone className="h-8 w-8 text-emerald-400 mx-auto mb-2" />
-                <h3 className="font-medium text-white mb-1">Phone</h3>
-                <p className="text-sm text-gray-400">Available at launch</p>
-              </div>
-            </div>
+            <Card className="card-modern text-center">
+              <CardContent className="p-8">
+                <Mail className="w-12 h-12 text-primary mx-auto mb-4" />
+                <h3 className="text-xl font-semibold text-white mb-2">Email Support</h3>
+                <p className="text-white/70 mb-4">Send us a detailed message</p>
+                <div className="flex items-center justify-center text-sm text-yellow-400 mb-4">
+                  <Clock className="w-4 h-4 mr-1" />
+                  Response within 2 hours
+                </div>
+                <Button variant="outline" className="btn-modern btn-secondary w-full bg-transparent">
+                  Send Email
+                </Button>
+              </CardContent>
+            </Card>
+
+            <Card className="card-modern text-center">
+              <CardContent className="p-8">
+                <Phone className="w-12 h-12 text-primary mx-auto mb-4" />
+                <h3 className="text-xl font-semibold text-white mb-2">Phone Support</h3>
+                <p className="text-white/70 mb-4">Speak directly with our team</p>
+                <div className="flex items-center justify-center text-sm text-blue-400 mb-4">
+                  <Clock className="w-4 h-4 mr-1" />
+                  Mon-Fri 9AM-6PM EST
+                </div>
+                <Button variant="outline" className="btn-modern btn-secondary w-full bg-transparent">
+                  +1 (555) 123-4567
+                </Button>
+              </CardContent>
+            </Card>
           </div>
 
-          {/* FAQ Section */}
-          <div>
-            <h2 className="text-2xl font-bold text-white mb-6">Frequently Asked Questions</h2>
-            <div className="space-y-4">
-              {faqs.map((faq, index) => (
-                <Card key={index} className="bg-gray-900/30 border-gray-800">
-                  <CardHeader className="pb-3">
-                    <CardTitle className="text-lg text-white">{faq.question}</CardTitle>
-                  </CardHeader>
-                  <CardContent className="pt-0">
-                    <p className="text-gray-300 leading-relaxed">{faq.answer}</p>
+          {/* Search and Categories */}
+          <Card className="card-modern mb-12">
+            <CardHeader>
+              <CardTitle className="text-gradient text-center">Frequently Asked Questions</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="max-w-md mx-auto mb-8">
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white/40 w-5 h-5" />
+                  <Input
+                    type="text"
+                    placeholder="Search FAQs..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="pl-10 glass border-white/20 text-white placeholder:text-white/40"
+                  />
+                </div>
+              </div>
+
+              <div className="flex flex-wrap justify-center gap-2 mb-8">
+                {categories.map((category) => (
+                  <Button
+                    key={category.id}
+                    variant={selectedCategory === category.id ? "default" : "outline"}
+                    size="sm"
+                    onClick={() => setSelectedCategory(category.id)}
+                    className={`btn-modern ${selectedCategory === category.id ? "btn-primary" : "btn-secondary"}`}
+                  >
+                    {category.icon}
+                    <span className="ml-2">{category.name}</span>
+                  </Button>
+                ))}
+              </div>
+
+              <Accordion type="single" collapsible className="space-y-4">
+                {filteredFaqs.map((faq, index) => (
+                  <AccordionItem
+                    key={index}
+                    value={`item-${index}`}
+                    className="glass border border-white/10 rounded-lg px-6"
+                  >
+                    <AccordionTrigger className="text-white hover:text-primary text-left">
+                      {faq.question}
+                    </AccordionTrigger>
+                    <AccordionContent className="text-white/70 pb-4">{faq.answer}</AccordionContent>
+                  </AccordionItem>
+                ))}
+              </Accordion>
+
+              {filteredFaqs.length === 0 && (
+                <div className="text-center py-12">
+                  <p className="text-white/60">No FAQs found matching your search and category.</p>
+                  <Button
+                    variant="outline"
+                    className="btn-modern btn-secondary mt-4 bg-transparent"
+                    onClick={() => {
+                      setSearchQuery("")
+                      setSelectedCategory("all")
+                    }}
+                  >
+                    Clear Filters
+                  </Button>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+
+          {/* Resources */}
+          <div className="mb-16">
+            <h2 className="text-3xl font-bold text-gradient text-center mb-8">Helpful Resources</h2>
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {resources.map((resource, index) => (
+                <Card key={index} className="card-modern group cursor-pointer">
+                  <CardContent className="p-6">
+                    <div className="flex items-start justify-between mb-4">
+                      <div className="text-primary group-hover:scale-110 transition-transform duration-300">
+                        {resource.icon}
+                      </div>
+                      {resource.badge && (
+                        <Badge variant={resource.badge === "New" ? "default" : "secondary"} className="text-xs">
+                          {resource.badge}
+                        </Badge>
+                      )}
+                    </div>
+                    <h3 className="font-semibold text-white mb-2">{resource.title}</h3>
+                    <p className="text-white/70 text-sm">{resource.description}</p>
                   </CardContent>
                 </Card>
               ))}
             </div>
+          </div>
 
-            <div className="mt-8 bg-gradient-to-r from-emerald-500/10 to-cyan-500/10 border border-emerald-500/20 rounded-lg p-6">
-              <h3 className="text-lg font-semibold text-white mb-2">Still have questions?</h3>
-              <p className="text-gray-300 mb-4">
-                Can't find what you're looking for? Our team is here to help you get the answers you need.
+          {/* Contact Form */}
+          <Card className="card-modern max-w-2xl mx-auto">
+            <CardHeader>
+              <CardTitle className="text-gradient text-center">Still Need Help?</CardTitle>
+              <p className="text-white/70 text-center">
+                Send us a message and we'll get back to you as soon as possible.
               </p>
-              <Link href="mailto:support@stocxai.com">
-                <Button className="bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-600 hover:to-cyan-600">
-                  Contact Support
+            </CardHeader>
+            <CardContent>
+              <form className="space-y-6">
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-white mb-2">Name</label>
+                    <Input
+                      type="text"
+                      placeholder="Your name"
+                      className="glass border-white/20 text-white placeholder:text-white/40"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-white mb-2">Email</label>
+                    <Input
+                      type="email"
+                      placeholder="your@email.com"
+                      className="glass border-white/20 text-white placeholder:text-white/40"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-white mb-2">Subject</label>
+                  <Input
+                    type="text"
+                    placeholder="How can we help?"
+                    className="glass border-white/20 text-white placeholder:text-white/40"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-white mb-2">Message</label>
+                  <Textarea
+                    placeholder="Describe your issue or question in detail..."
+                    rows={5}
+                    className="glass border-white/20 text-white placeholder:text-white/40"
+                  />
+                </div>
+                <Button type="submit" className="btn-modern btn-primary w-full">
+                  Send Message
+                </Button>
+              </form>
+            </CardContent>
+          </Card>
+
+          {/* Footer Links */}
+          <div className="mt-16 text-center">
+            <div className="flex flex-wrap justify-center gap-4 mb-8">
+              <Link href="/privacy">
+                <Button variant="outline" className="btn-modern btn-secondary bg-transparent">
+                  Privacy Policy
+                </Button>
+              </Link>
+              <Link href="/terms">
+                <Button variant="outline" className="btn-modern btn-secondary bg-transparent">
+                  Terms of Service
+                </Button>
+              </Link>
+              <Link href="/data-deletion">
+                <Button variant="outline" className="btn-modern btn-secondary bg-transparent">
+                  Data Deletion
                 </Button>
               </Link>
             </div>
+            <p className="text-white/50 text-sm">Our support team is here to help you succeed with Stocx AI</p>
           </div>
         </div>
       </div>

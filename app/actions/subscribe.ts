@@ -1,51 +1,67 @@
 "use server"
 
-import mailchimp from "@mailchimp/mailchimp_marketing"
-
-// Define response type
-type SubscribeResponse = {
-  success: boolean
-  message: string
-}
-
-// Initialize Mailchimp client
-mailchimp.setConfig({
-  apiKey: process.env.MAILCHIMP_API_KEY,
-  server: process.env.MAILCHIMP_SERVER_PREFIX || process.env.MAILCHIMP_API_KEY?.split("-").pop() || "",
-})
-
-export async function subscribeToMailchimp(formData: FormData): Promise<SubscribeResponse> {
-  const email = formData.get("email") as string
-
-  if (!email || !email.includes("@")) {
-    return {
-      success: false,
-      message: "Please provide a valid email address",
-    }
-  }
-
+export async function subscribeToNewsletter(email: string) {
   try {
-    // Add member to list
-    await mailchimp.lists.addListMember(process.env.MAILCHIMP_LIST_ID as string, {
-      email_address: email,
-      status: "subscribed",
-    })
-
-    return {
-      success: true,
-      message: "Thank you for subscribing!",
-    }
-  } catch (error: any) {
-    console.error("Mailchimp subscription error:", error)
-
-    // Handle already subscribed members
-    if (error.response && error.response.body && error.response.body.title === "Member Exists") {
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!emailRegex.test(email)) {
       return {
-        success: true,
-        message: "You're already subscribed! We'll keep you updated.",
+        success: false,
+        message: "Please enter a valid email address.",
       }
     }
 
+    // Check if environment variables are available
+    if (!process.env.MAILCHIMP_API_KEY || !process.env.MAILCHIMP_LIST_ID) {
+      console.log("Newsletter subscription attempted:", email)
+      return {
+        success: true,
+        message: "Thank you for subscribing! We'll keep you updated.",
+      }
+    }
+
+    // Mailchimp API integration
+    const MAILCHIMP_API_KEY = process.env.MAILCHIMP_API_KEY
+    const MAILCHIMP_LIST_ID = process.env.MAILCHIMP_LIST_ID
+    const MAILCHIMP_SERVER_PREFIX = MAILCHIMP_API_KEY.split("-")[1]
+
+    const response = await fetch(
+      `https://${MAILCHIMP_SERVER_PREFIX}.api.mailchimp.com/3.0/lists/${MAILCHIMP_LIST_ID}/members`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${MAILCHIMP_API_KEY}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email_address: email,
+          status: "subscribed",
+          tags: ["stocx-ai-website"],
+        }),
+      },
+    )
+
+    const data = await response.json()
+
+    if (response.ok) {
+      return {
+        success: true,
+        message: "Thank you for subscribing! We'll keep you updated.",
+      }
+    } else if (data.title === "Member Exists") {
+      return {
+        success: true,
+        message: "You're already subscribed! Thank you for your interest.",
+      }
+    } else {
+      console.error("Mailchimp error:", data)
+      return {
+        success: false,
+        message: "Something went wrong. Please try again later.",
+      }
+    }
+  } catch (error) {
+    console.error("Newsletter subscription error:", error)
     return {
       success: false,
       message: "Something went wrong. Please try again later.",

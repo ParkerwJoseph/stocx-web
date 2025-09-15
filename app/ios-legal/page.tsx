@@ -1,148 +1,309 @@
-import { ArrowLeft, FileText, Shield, Smartphone } from "lucide-react"
-import Link from "next/link"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-
-export const metadata = {
-  title: "iOS App Legal - Stocx Ai",
-  description: "Terms of Service and Privacy Policy for Stocx Ai iOS application.",
-}
+import { Apple, ExternalLink, FileText, Shield } from "lucide-react"
+import Link from "next/link"
 
 export default function IOSLegalPage() {
   return (
-    <div className="min-h-screen bg-black text-white">
-      {/* Header */}
-      <div className="border-b border-gray-800">
-        <div className="container mx-auto px-4 py-6">
-          <div className="flex items-center gap-4">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900">
+      {/* Navigation */}
+      <nav className="fixed top-0 w-full z-50 glass border-b border-white/10">
+        <div className="container-modern">
+          <div className="flex items-center justify-between h-16">
+            <Link href="/" className="flex items-center space-x-2">
+              <div className="w-8 h-8 bg-gradient-green rounded-lg flex items-center justify-center">
+                <Apple className="w-5 h-5 text-black" />
+              </div>
+              <span className="text-xl font-bold text-gradient">Stocx AI</span>
+            </Link>
             <Link href="/">
-              <Button variant="ghost" size="sm" className="text-gray-400 hover:text-white">
-                <ArrowLeft className="h-4 w-4 mr-2" />
+              <Button variant="outline" className="btn-modern btn-secondary bg-transparent">
                 Back to Home
               </Button>
             </Link>
-            <div className="h-6 w-px bg-gray-700" />
-            <h1 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-400">
-              Stocx Ai
-            </h1>
           </div>
         </div>
-      </div>
+      </nav>
 
-      <div className="container mx-auto px-4 py-12 max-w-4xl">
-        <div className="text-center mb-12">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-emerald-500/20 to-cyan-500/20 mb-6">
-            <Smartphone className="h-8 w-8 text-emerald-400" />
+      <div className="pt-24 pb-16">
+        <div className="container-modern">
+          {/* Header */}
+          <div className="text-center mb-16">
+            <h1 className="text-4xl md:text-5xl font-bold text-gradient mb-4">iOS App Legal Information</h1>
+            <p className="text-xl text-white/70 max-w-2xl mx-auto">
+              Legal documents and policies specific to our iOS application.
+            </p>
           </div>
-          <h1 className="text-4xl font-bold mb-4 text-white">iOS App Legal Information</h1>
-          <p className="text-gray-300 text-lg">
-            Access our Terms of Service and Privacy Policy for the Stocx Ai iOS application.
-          </p>
-        </div>
 
-        <div className="grid md:grid-cols-2 gap-8 mb-12">
-          <Card className="bg-gray-900/50 border-gray-800 hover:border-emerald-500/30 transition-colors">
-            <CardHeader>
-              <div className="flex items-center gap-3 mb-2">
-                <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-emerald-500/20 to-cyan-500/20 flex items-center justify-center">
-                  <FileText className="h-5 w-5 text-emerald-400" />
-                </div>
-                <CardTitle className="text-white">Terms of Service</CardTitle>
-              </div>
-              <CardDescription className="text-gray-400">
-                Complete terms and conditions for using the Stocx Ai iOS app, including subscription terms and user
-                responsibilities.
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-3 mb-6">
-                <div className="flex items-center justify-between text-sm">
-                  <span className="text-gray-300">Auto-renewable subscriptions</span>
-                  <span className="text-emerald-400">✓ Covered</span>
-                </div>
-                <div className="flex items-center justify-between text-sm">
-                  <span className="text-gray-300">Apple compliance</span>
-                  <span className="text-emerald-400">✓ Covered</span>
-                </div>
-                <div className="flex items-center justify-between text-sm">
-                  <span className="text-gray-300">Investment disclaimers</span>
-                  <span className="text-emerald-400">✓ Covered</span>
-                </div>
-                <div className="flex items-center justify-between text-sm">
-                  <span className="text-gray-300">Liability limitations</span>
-                  <span className="text-emerald-400">✓ Covered</span>
-                </div>
-              </div>
-              <Link href="/terms">
-                <Button className="w-full bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-600 hover:to-cyan-600">
-                  View Terms of Service
-                </Button>
-              </Link>
-            </CardContent>
-          </Card>
+          {/* Quick Links */}
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+            <Link href="/privacy-ios">
+              <Card className="card-modern cursor-pointer group">
+                <CardContent className="p-6 text-center">
+                  <Shield className="w-8 h-8 text-primary mx-auto mb-3 group-hover:scale-110 transition-transform" />
+                  <h3 className="font-semibold text-white mb-2">iOS Privacy Policy</h3>
+                  <p className="text-white/70 text-sm">iOS-specific privacy information</p>
+                </CardContent>
+              </Card>
+            </Link>
 
-          <Card className="bg-gray-900/50 border-gray-800 hover:border-cyan-500/30 transition-colors">
-            <CardHeader>
-              <div className="flex items-center gap-3 mb-2">
-                <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-cyan-500/20 to-emerald-500/20 flex items-center justify-center">
-                  <Shield className="h-5 w-5 text-cyan-400" />
+            <Card className="card-modern cursor-pointer group">
+              <CardContent className="p-6 text-center">
+                <FileText className="w-8 h-8 text-primary mx-auto mb-3 group-hover:scale-110 transition-transform" />
+                <h3 className="font-semibold text-white mb-2">App Store Terms</h3>
+                <p className="text-white/70 text-sm">Apple App Store specific terms</p>
+              </CardContent>
+            </Card>
+
+            <Card className="card-modern cursor-pointer group">
+              <CardContent className="p-6 text-center">
+                <Apple className="w-8 h-8 text-primary mx-auto mb-3 group-hover:scale-110 transition-transform" />
+                <h3 className="font-semibold text-white mb-2">iOS Guidelines</h3>
+                <p className="text-white/70 text-sm">Compliance with Apple guidelines</p>
+              </CardContent>
+            </Card>
+
+            <Card className="card-modern cursor-pointer group">
+              <CardContent className="p-6 text-center">
+                <ExternalLink className="w-8 h-8 text-primary mx-auto mb-3 group-hover:scale-110 transition-transform" />
+                <h3 className="font-semibold text-white mb-2">Third-Party</h3>
+                <p className="text-white/70 text-sm">Third-party licenses and notices</p>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Main Content */}
+          <div className="space-y-8">
+            <Card className="card-modern">
+              <CardHeader>
+                <CardTitle className="text-gradient">App Store Compliance</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4 text-white/80">
+                <p>
+                  The Stocx AI iOS application complies with all Apple App Store Review Guidelines and policies. This
+                  includes adherence to content policies, user privacy requirements, and technical standards.
+                </p>
+                <div>
+                  <h4 className="font-semibold text-white mb-2">Key Compliance Areas</h4>
+                  <ul className="list-disc list-inside space-y-1 text-white/70">
+                    <li>User privacy and data protection (iOS 14.5+ App Tracking Transparency)</li>
+                    <li>In-app purchase guidelines and subscription management</li>
+                    <li>Content and conduct policies for financial applications</li>
+                    <li>Accessibility standards (VoiceOver, Dynamic Type support)</li>
+                    <li>Security requirements for financial data handling</li>
+                  </ul>
                 </div>
-                <CardTitle className="text-white">Privacy Policy</CardTitle>
-              </div>
-              <CardDescription className="text-gray-400">
-                Detailed privacy policy explaining our minimal data collection practices and third-party integrations.
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-3 mb-6">
-                <div className="flex items-center justify-between text-sm">
-                  <span className="text-gray-300">No personal data collected</span>
-                  <span className="text-emerald-400">✓ Confirmed</span>
+              </CardContent>
+            </Card>
+
+            <Card className="card-modern">
+              <CardHeader>
+                <CardTitle className="text-gradient">iOS-Specific Privacy Practices</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4 text-white/80">
+                <div>
+                  <h4 className="font-semibold text-white mb-2">App Tracking Transparency</h4>
+                  <p className="text-white/70 mb-4">
+                    In compliance with iOS 14.5+ requirements, Stocx AI requests permission before tracking your
+                    activity across other companies' apps and websites. You can manage this permission in your device
+                    settings at any time.
+                  </p>
                 </div>
-                <div className="flex items-center justify-between text-sm">
-                  <span className="text-gray-300">Apple subscription data</span>
-                  <span className="text-cyan-400">✓ Explained</span>
+                <div>
+                  <h4 className="font-semibold text-white mb-2">Privacy Nutrition Labels</h4>
+                  <p className="text-white/70 mb-2">
+                    Our App Store listing includes Apple's privacy nutrition labels that detail:
+                  </p>
+                  <ul className="list-disc list-inside space-y-1 text-white/70">
+                    <li>Data types collected and their purposes</li>
+                    <li>Whether data is linked to your identity</li>
+                    <li>Whether data is used for tracking</li>
+                    <li>Data sharing practices with third parties</li>
+                  </ul>
                 </div>
-                <div className="flex items-center justify-between text-sm">
-                  <span className="text-gray-300">Google Ads integration</span>
-                  <span className="text-cyan-400">✓ Explained</span>
+                <div>
+                  <h4 className="font-semibold text-white mb-2">iOS Permissions</h4>
+                  <p className="text-white/70 mb-2">Stocx AI requests the following iOS permissions:</p>
+                  <ul className="list-disc list-inside space-y-1 text-white/70">
+                    <li>
+                      <strong>Notifications:</strong> For trading alerts and market updates
+                    </li>
+                    <li>
+                      <strong>Face ID/Touch ID:</strong> For secure app access (optional)
+                    </li>
+                    <li>
+                      <strong>Camera:</strong> For QR code scanning (optional)
+                    </li>
+                    <li>
+                      <strong>Contacts:</strong> For referral features (optional)
+                    </li>
+                  </ul>
                 </div>
-                <div className="flex items-center justify-between text-sm">
-                  <span className="text-gray-300">App Store compliance</span>
-                  <span className="text-emerald-400">✓ Covered</span>
+              </CardContent>
+            </Card>
+
+            <Card className="card-modern">
+              <CardHeader>
+                <CardTitle className="text-gradient">Subscription Terms (iOS)</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4 text-white/80">
+                <div>
+                  <h4 className="font-semibold text-white mb-2">Auto-Renewable Subscriptions</h4>
+                  <p className="text-white/70 mb-4">
+                    Stocx AI offers auto-renewable subscriptions through the App Store. These subscriptions
+                    automatically renew unless cancelled at least 24 hours before the end of the current period.
+                  </p>
+                  <ul className="list-disc list-inside space-y-1 text-white/70">
+                    <li>Payment will be charged to your iTunes Account at confirmation of purchase</li>
+                    <li>
+                      Subscription automatically renews unless auto-renew is turned off at least 24-hours before the end
+                      of the current period
+                    </li>
+                    <li>Account will be charged for renewal within 24-hours prior to the end of the current period</li>
+                    <li>
+                      Subscriptions may be managed by the user and auto-renewal may be turned off by going to the user's
+                      Account Settings after purchase
+                    </li>
+                    <li>
+                      Any unused portion of a free trial period will be forfeited when the user purchases a subscription
+                    </li>
+                  </ul>
                 </div>
-              </div>
+                <div>
+                  <h4 className="font-semibold text-white mb-2">Managing Your Subscription</h4>
+                  <p className="text-white/70 mb-2">To manage or cancel your subscription:</p>
+                  <ol className="list-decimal list-inside space-y-1 text-white/70">
+                    <li>Open the Settings app on your iOS device</li>
+                    <li>Tap your name at the top of the screen</li>
+                    <li>Tap "Subscriptions"</li>
+                    <li>Find and tap "Stocx AI"</li>
+                    <li>Choose your preferred subscription option or tap "Cancel Subscription"</li>
+                  </ol>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="card-modern">
+              <CardHeader>
+                <CardTitle className="text-gradient">Third-Party Services and SDKs</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4 text-white/80">
+                <p>
+                  The iOS version of Stocx AI integrates with the following third-party services and SDKs, each with
+                  their own privacy policies and terms of service:
+                </p>
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div>
+                    <h4 className="font-semibold text-white mb-2">Analytics & Performance</h4>
+                    <ul className="list-disc list-inside space-y-1 text-white/70 text-sm">
+                      <li>Firebase Analytics (Google)</li>
+                      <li>Crashlytics (Google)</li>
+                      <li>App Store Connect Analytics (Apple)</li>
+                    </ul>
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-white mb-2">Financial Data</h4>
+                    <ul className="list-disc list-inside space-y-1 text-white/70 text-sm">
+                      <li>Alpha Vantage API</li>
+                      <li>IEX Cloud</li>
+                      <li>CoinGecko API</li>
+                    </ul>
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-white mb-2">Authentication & Security</h4>
+                    <ul className="list-disc list-inside space-y-1 text-white/70 text-sm">
+                      <li>Auth0</li>
+                      <li>Keychain Services (Apple)</li>
+                      <li>Touch ID/Face ID (Apple)</li>
+                    </ul>
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-white mb-2">Communication</h4>
+                    <ul className="list-disc list-inside space-y-1 text-white/70 text-sm">
+                      <li>Apple Push Notification Service</li>
+                      <li>SendGrid (Email)</li>
+                      <li>Twilio (SMS)</li>
+                    </ul>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="card-modern">
+              <CardHeader>
+                <CardTitle className="text-gradient">Accessibility Commitment</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4 text-white/80">
+                <p>
+                  Stocx AI is committed to making our iOS app accessible to all users, including those with
+                  disabilities. We follow Apple's accessibility guidelines and continuously work to improve our app's
+                  accessibility features.
+                </p>
+                <div>
+                  <h4 className="font-semibold text-white mb-2">Supported Accessibility Features</h4>
+                  <ul className="list-disc list-inside space-y-1 text-white/70">
+                    <li>VoiceOver screen reader support</li>
+                    <li>Dynamic Type for adjustable text sizes</li>
+                    <li>High contrast mode compatibility</li>
+                    <li>Voice Control support</li>
+                    <li>Switch Control compatibility</li>
+                    <li>Reduce Motion support for animations</li>
+                  </ul>
+                </div>
+                <p className="text-white/70">
+                  If you encounter any accessibility issues or have suggestions for improvement, please contact our
+                  support team at accessibility@stocx.ai.
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="card-modern">
+              <CardHeader>
+                <CardTitle className="text-gradient">Contact Information</CardTitle>
+              </CardHeader>
+              <CardContent className="text-white/80">
+                <p className="mb-4">For iOS-specific legal questions or concerns, please contact us:</p>
+                <div className="space-y-2 text-white/70">
+                  <p>
+                    <strong>Email:</strong> ios-legal@stocx.ai
+                  </p>
+                  <p>
+                    <strong>Phone:</strong> +1 (555) 123-4567
+                  </p>
+                  <p>
+                    <strong>Address:</strong> 123 Trading Street, Financial District, NY 10004
+                  </p>
+                </div>
+                <div className="mt-6 p-4 bg-primary/10 rounded-lg border border-primary/20">
+                  <p className="text-sm text-white/80">
+                    <strong>App Store Support:</strong> For issues related to App Store purchases, subscriptions, or
+                    downloads, please contact Apple Support directly through the App Store app or at support.apple.com.
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Footer Navigation */}
+          <div className="mt-16 text-center">
+            <div className="flex flex-wrap justify-center gap-4 mb-8">
               <Link href="/privacy-ios">
-                <Button className="w-full bg-gradient-to-r from-cyan-500 to-emerald-500 hover:from-cyan-600 hover:to-emerald-600">
-                  View Privacy Policy
+                <Button variant="outline" className="btn-modern btn-secondary bg-transparent">
+                  iOS Privacy Policy
                 </Button>
               </Link>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Quick Summary */}
-        <div className="bg-gradient-to-r from-emerald-500/10 to-cyan-500/10 border border-emerald-500/20 rounded-lg p-6">
-          <h3 className="text-lg font-semibold text-white mb-4">Quick Summary</h3>
-          <div className="grid md:grid-cols-2 gap-6">
-            <div>
-              <h4 className="font-medium text-emerald-400 mb-2">Privacy Highlights</h4>
-              <ul className="text-sm text-gray-300 space-y-1">
-                <li>• No personal data collected by our app</li>
-                <li>• Apple handles all subscription data</li>
-                <li>• Google Ads may collect advertising data</li>
-                <li>• Full transparency in our practices</li>
-              </ul>
+              <Link href="/terms">
+                <Button variant="outline" className="btn-modern btn-secondary bg-transparent">
+                  Terms of Service
+                </Button>
+              </Link>
+              <Link href="/support">
+                <Button variant="outline" className="btn-modern btn-secondary bg-transparent">
+                  Support Center
+                </Button>
+              </Link>
             </div>
-            <div>
-              <h4 className="font-medium text-cyan-400 mb-2">Subscription Terms</h4>
-              <ul className="text-sm text-gray-300 space-y-1">
-                <li>• Auto-renewable subscriptions available</li>
-                <li>• Cancel anytime through Apple ID settings</li>
-                <li>• Free trials may be offered</li>
-                <li>• Refunds handled by Apple</li>
-              </ul>
-            </div>
+            <p className="text-white/50 text-sm">This information is specific to the iOS version of Stocx AI</p>
           </div>
         </div>
       </div>
