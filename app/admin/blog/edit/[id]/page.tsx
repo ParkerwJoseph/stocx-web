@@ -11,60 +11,14 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { toast } from "@/hooks/use-toast"
 import { Save, ArrowLeft, Eye, Trash2 } from "lucide-react"
 import Link from "next/link"
+import { getBlogPost, updateBlogPost, deleteBlogPost, type BlogPost } from "@/lib/content-store"
 
 export default function EditBlogPost() {
   const router = useRouter()
   const params = useParams()
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [isSaving, setIsSaving] = useState(false)
-  const [post, setPost] = useState({
-    title: "AI Trading Strategies for 2024",
-    excerpt: "Discover the latest AI-powered trading strategies that are revolutionizing the financial markets...",
-    content: `# AI Trading Strategies for 2024
-
-The world of trading is rapidly evolving, and artificial intelligence is at the forefront of this transformation. In 2024, we're seeing unprecedented developments in AI-powered trading strategies that are changing how both institutional and retail investors approach the markets.
-
-## Key AI Trading Strategies
-
-### 1. Machine Learning Pattern Recognition
-Advanced algorithms can now identify complex patterns in market data that human traders might miss. These systems analyze:
-- Historical price movements
-- Volume patterns
-- Market sentiment indicators
-- News and social media sentiment
-
-### 2. Predictive Analytics
-AI models use vast amounts of data to predict future market movements with increasing accuracy:
-- Economic indicators
-- Company fundamentals
-- Technical analysis
-- Global events impact
-
-### 3. Risk Management Automation
-AI-powered risk management systems can:
-- Automatically adjust position sizes
-- Set dynamic stop-losses
-- Diversify portfolios in real-time
-- Monitor correlation risks
-
-## Getting Started with AI Trading
-
-If you're interested in incorporating AI into your trading strategy, consider these steps:
-
-1. **Education**: Learn about machine learning and its applications in finance
-2. **Start Small**: Begin with paper trading or small positions
-3. **Use Established Platforms**: Consider platforms like Stocx AI that offer proven AI trading tools
-4. **Monitor Performance**: Track your AI-assisted trades vs. traditional methods
-
-## Conclusion
-
-AI trading strategies are not just the future—they're the present. As these technologies continue to evolve, traders who adapt and integrate AI into their strategies will have a significant advantage in the markets.
-
-Remember, while AI can provide powerful insights, it's important to understand the technology and maintain proper risk management practices.`,
-    status: "published",
-    tags: "ai, trading, strategies, 2024",
-    featuredImage: "/placeholder.jpg",
-  })
+  const [post, setPost] = useState<BlogPost | null>(null)
 
   useEffect(() => {
     const auth = localStorage.getItem("admin_authenticated")
@@ -72,11 +26,25 @@ Remember, while AI can provide powerful insights, it's important to understand t
       router.push("/admin/login")
     } else {
       setIsAuthenticated(true)
-    }
-  }, [router])
 
-  const handleSave = async (status: string) => {
-    if (!post.title || !post.content) {
+      // Load the blog post
+      const postId = Number.parseInt(params.id as string)
+      const blogPost = getBlogPost(postId)
+      if (blogPost) {
+        setPost(blogPost)
+      } else {
+        toast({
+          title: "Post Not Found",
+          description: "The requested blog post could not be found.",
+          variant: "destructive",
+        })
+        router.push("/admin/blog")
+      }
+    }
+  }, [router, params.id])
+
+  const handleSave = async (status: "draft" | "published") => {
+    if (!post || !post.title || !post.content) {
       toast({
         title: "Error",
         description: "Please fill in the title and content fields.",
@@ -87,32 +55,52 @@ Remember, while AI can provide powerful insights, it's important to understand t
 
     setIsSaving(true)
 
-    // Simulate saving to database
-    await new Promise((resolve) => setTimeout(resolve, 1000))
-
-    toast({
-      title: "Post Updated",
-      description: `Blog post has been ${status === "published" ? "published" : "saved as draft"}.`,
-    })
-
-    setIsSaving(false)
-  }
-
-  const handleDelete = async () => {
-    if (confirm("Are you sure you want to delete this post? This action cannot be undone.")) {
-      // Simulate deletion
-      await new Promise((resolve) => setTimeout(resolve, 500))
-
-      toast({
-        title: "Post Deleted",
-        description: "The blog post has been permanently deleted.",
+    try {
+      const updatedPost = updateBlogPost(post.id, {
+        ...post,
+        status,
+        tags:
+          typeof post.tags === "string"
+            ? post.tags
+                .split(",")
+                .map((tag) => tag.trim())
+                .filter((tag) => tag)
+            : post.tags,
       })
 
-      router.push("/admin/blog")
+      if (updatedPost) {
+        toast({
+          title: "Post Updated",
+          description: `Blog post has been ${status === "published" ? "published" : "saved as draft"}.`,
+        })
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to update blog post. Please try again.",
+        variant: "destructive",
+      })
+    } finally {
+      setIsSaving(false)
     }
   }
 
-  if (!isAuthenticated) {
+  const handleDelete = async () => {
+    if (!post) return
+
+    if (confirm("Are you sure you want to delete this post? This action cannot be undone.")) {
+      const success = deleteBlogPost(post.id)
+      if (success) {
+        toast({
+          title: "Post Deleted",
+          description: "The blog post has been permanently deleted.",
+        })
+        router.push("/admin/blog")
+      }
+    }
+  }
+
+  if (!isAuthenticated || !post) {
     return <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900" />
   }
 
@@ -219,7 +207,10 @@ Remember, while AI can provide powerful insights, it's important to understand t
                   <Label htmlFor="status" className="text-white">
                     Status
                   </Label>
-                  <Select value={post.status} onValueChange={(value) => setPost({ ...post, status: value })}>
+                  <Select
+                    value={post.status}
+                    onValueChange={(value: "draft" | "published") => setPost({ ...post, status: value })}
+                  >
                     <SelectTrigger className="glass border-white/20 text-white">
                       <SelectValue />
                     </SelectTrigger>
@@ -239,7 +230,7 @@ Remember, while AI can provide powerful insights, it's important to understand t
                   </Label>
                   <Input
                     id="tags"
-                    value={post.tags}
+                    value={Array.isArray(post.tags) ? post.tags.join(", ") : post.tags}
                     onChange={(e) => setPost({ ...post, tags: e.target.value })}
                     className="glass border-white/20 text-white"
                   />
@@ -265,15 +256,19 @@ Remember, while AI can provide powerful insights, it's important to understand t
               <CardContent className="space-y-4">
                 <div className="flex justify-between">
                   <span className="text-gray-400">Views:</span>
-                  <span className="text-white">1,250</span>
+                  <span className="text-white">{post.views.toLocaleString()}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-400">Published:</span>
-                  <span className="text-white">Jan 15, 2024</span>
+                  <span className="text-white">{post.date}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-400">Last Modified:</span>
-                  <span className="text-white">Jan 15, 2024</span>
+                  <span className="text-gray-400">Author:</span>
+                  <span className="text-white">{post.author}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-400">Read Time:</span>
+                  <span className="text-white">{post.readTime}</span>
                 </div>
               </CardContent>
             </Card>

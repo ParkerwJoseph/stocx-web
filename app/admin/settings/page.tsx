@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Switch } from "@/components/ui/switch"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Separator } from "@/components/ui/separator"
 import { toast } from "@/hooks/use-toast"
 import { Save, ArrowLeft, LogOut } from "lucide-react"
 import Link from "next/link"
@@ -17,21 +17,21 @@ export default function AdminSettings() {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [isSaving, setIsSaving] = useState(false)
   const [settings, setSettings] = useState({
-    site: {
-      title: "Stocx AI",
-      description: "Trade Smarter with AI-Powered Insights",
-      url: "https://stocx-ai.vercel.app",
-      email: "support@stocx.ai",
+    general: {
+      siteTitle: "Stocx AI",
+      siteDescription: "AI-powered trading platform",
+      siteUrl: "https://stocx.ai",
+      contactEmail: "support@stocx.ai",
     },
     features: {
       newsletter: true,
       blog: true,
       analytics: true,
-      maintenance: false,
+      maintenanceMode: false,
     },
     social: {
       twitter: "@stocxai",
-      linkedin: "stocx-ai",
+      linkedin: "company/stocx-ai",
       github: "stocx-ai",
     },
   })
@@ -42,18 +42,30 @@ export default function AdminSettings() {
       router.push("/admin/login")
     } else {
       setIsAuthenticated(true)
+      // Load settings from localStorage if they exist
+      const savedSettings = localStorage.getItem("admin_settings")
+      if (savedSettings) {
+        try {
+          setSettings(JSON.parse(savedSettings))
+        } catch (e) {
+          console.error("Error loading settings:", e)
+        }
+      }
     }
   }, [router])
 
   const handleSave = async () => {
     setIsSaving(true)
 
-    // Simulate saving to database
+    // Save settings to localStorage
+    localStorage.setItem("admin_settings", JSON.stringify(settings))
+
+    // Simulate API call delay
     await new Promise((resolve) => setTimeout(resolve, 1000))
 
     toast({
       title: "Settings Saved",
-      description: "Website settings have been successfully updated.",
+      description: "Your settings have been successfully updated.",
     })
 
     setIsSaving(false)
@@ -71,212 +83,193 @@ export default function AdminSettings() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900">
       <div className="container mx-auto p-6">
-        <div className="mb-8">
-          <Link href="/admin/dashboard">
-            <Button variant="ghost" className="text-gray-400 hover:text-white mb-4">
-              <ArrowLeft className="w-4 h-4 mr-2" />
-              Back to Dashboard
+        <div className="mb-8 flex items-center justify-between">
+          <div>
+            <Link href="/admin/dashboard">
+              <Button variant="ghost" className="text-gray-400 hover:text-white mb-4">
+                <ArrowLeft className="w-4 h-4 mr-2" />
+                Back to Dashboard
+              </Button>
+            </Link>
+            <h1 className="text-3xl font-bold text-white mb-2">Settings</h1>
+            <p className="text-gray-400">Manage your site configuration and preferences</p>
+          </div>
+          <div className="flex gap-2">
+            <Button
+              onClick={handleLogout}
+              variant="outline"
+              className="bg-transparent border-red-500/20 text-red-400 hover:bg-red-500/10"
+            >
+              <LogOut className="w-4 h-4 mr-2" />
+              Logout
             </Button>
-          </Link>
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-3xl font-bold text-white mb-2">Settings</h1>
-              <p className="text-gray-400">Configure your website settings</p>
-            </div>
-            <div className="flex gap-2">
-              <Button
-                onClick={handleLogout}
-                variant="outline"
-                className="bg-transparent border-red-500/20 text-red-400 hover:bg-red-500/10"
-              >
-                <LogOut className="w-4 h-4 mr-2" />
-                Logout
-              </Button>
-              <Button
-                onClick={handleSave}
-                disabled={isSaving}
-                className="bg-gradient-to-r from-green-400 to-green-500 text-black font-semibold hover:from-green-500 hover:to-green-600"
-              >
-                <Save className="w-4 h-4 mr-2" />
-                {isSaving ? "Saving..." : "Save Settings"}
-              </Button>
-            </div>
+            <Button
+              onClick={handleSave}
+              disabled={isSaving}
+              className="bg-gradient-to-r from-green-400 to-green-500 text-black font-semibold hover:from-green-500 hover:to-green-600"
+            >
+              <Save className="w-4 h-4 mr-2" />
+              {isSaving ? "Saving..." : "Save Settings"}
+            </Button>
           </div>
         </div>
 
-        <Tabs defaultValue="general" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-3 bg-white/10">
-            <TabsTrigger
-              value="general"
-              className="text-white data-[state=active]:bg-green-500 data-[state=active]:text-black"
-            >
-              General
-            </TabsTrigger>
-            <TabsTrigger
-              value="features"
-              className="text-white data-[state=active]:bg-green-500 data-[state=active]:text-black"
-            >
-              Features
-            </TabsTrigger>
-            <TabsTrigger
-              value="social"
-              className="text-white data-[state=active]:bg-green-500 data-[state=active]:text-black"
-            >
-              Social
-            </TabsTrigger>
-          </TabsList>
-
-          <TabsContent value="general">
-            <Card className="glass border-white/20">
-              <CardHeader>
-                <CardTitle className="text-white">General Settings</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-6">
+        <div className="space-y-8">
+          {/* General Settings */}
+          <Card className="glass border-white/20">
+            <CardHeader>
+              <CardTitle className="text-white">General Settings</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-2">
-                  <Label htmlFor="site-title" className="text-white">
+                  <Label htmlFor="siteTitle" className="text-white">
                     Site Title
                   </Label>
                   <Input
-                    id="site-title"
-                    value={settings.site.title}
+                    id="siteTitle"
+                    value={settings.general.siteTitle}
                     onChange={(e) =>
                       setSettings({
                         ...settings,
-                        site: { ...settings.site, title: e.target.value },
+                        general: { ...settings.general, siteTitle: e.target.value },
                       })
                     }
                     className="glass border-white/20 text-white"
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="site-description" className="text-white">
-                    Site Description
-                  </Label>
-                  <Input
-                    id="site-description"
-                    value={settings.site.description}
-                    onChange={(e) =>
-                      setSettings({
-                        ...settings,
-                        site: { ...settings.site, description: e.target.value },
-                      })
-                    }
-                    className="glass border-white/20 text-white"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="site-url" className="text-white">
+                  <Label htmlFor="siteUrl" className="text-white">
                     Site URL
                   </Label>
                   <Input
-                    id="site-url"
-                    value={settings.site.url}
+                    id="siteUrl"
+                    value={settings.general.siteUrl}
                     onChange={(e) =>
                       setSettings({
                         ...settings,
-                        site: { ...settings.site, url: e.target.value },
+                        general: { ...settings.general, siteUrl: e.target.value },
                       })
                     }
                     className="glass border-white/20 text-white"
                   />
                 </div>
-                <div className="space-y-2">
-                  <Label htmlFor="site-email" className="text-white">
-                    Contact Email
-                  </Label>
-                  <Input
-                    id="site-email"
-                    type="email"
-                    value={settings.site.email}
-                    onChange={(e) =>
-                      setSettings({
-                        ...settings,
-                        site: { ...settings.site, email: e.target.value },
-                      })
-                    }
-                    className="glass border-white/20 text-white"
-                  />
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="siteDescription" className="text-white">
+                  Site Description
+                </Label>
+                <Input
+                  id="siteDescription"
+                  value={settings.general.siteDescription}
+                  onChange={(e) =>
+                    setSettings({
+                      ...settings,
+                      general: { ...settings.general, siteDescription: e.target.value },
+                    })
+                  }
+                  className="glass border-white/20 text-white"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="contactEmail" className="text-white">
+                  Contact Email
+                </Label>
+                <Input
+                  id="contactEmail"
+                  type="email"
+                  value={settings.general.contactEmail}
+                  onChange={(e) =>
+                    setSettings({
+                      ...settings,
+                      general: { ...settings.general, contactEmail: e.target.value },
+                    })
+                  }
+                  className="glass border-white/20 text-white"
+                />
+              </div>
+            </CardContent>
+          </Card>
 
-          <TabsContent value="features">
-            <Card className="glass border-white/20">
-              <CardHeader>
-                <CardTitle className="text-white">Feature Settings</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <Label className="text-white">Newsletter Subscription</Label>
-                    <p className="text-gray-400 text-sm">Allow users to subscribe to newsletter</p>
-                  </div>
-                  <Switch
-                    checked={settings.features.newsletter}
-                    onCheckedChange={(checked) =>
-                      setSettings({
-                        ...settings,
-                        features: { ...settings.features, newsletter: checked },
-                      })
-                    }
-                  />
+          {/* Feature Toggles */}
+          <Card className="glass border-white/20">
+            <CardHeader>
+              <CardTitle className="text-white">Feature Settings</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <Label className="text-white">Newsletter Subscription</Label>
+                  <p className="text-sm text-gray-400">Allow users to subscribe to newsletter</p>
                 </div>
-                <div className="flex items-center justify-between">
-                  <div>
-                    <Label className="text-white">Blog System</Label>
-                    <p className="text-gray-400 text-sm">Enable blog functionality</p>
-                  </div>
-                  <Switch
-                    checked={settings.features.blog}
-                    onCheckedChange={(checked) =>
-                      setSettings({
-                        ...settings,
-                        features: { ...settings.features, blog: checked },
-                      })
-                    }
-                  />
+                <Switch
+                  checked={settings.features.newsletter}
+                  onCheckedChange={(checked) =>
+                    setSettings({
+                      ...settings,
+                      features: { ...settings.features, newsletter: checked },
+                    })
+                  }
+                />
+              </div>
+              <Separator className="bg-white/10" />
+              <div className="flex items-center justify-between">
+                <div>
+                  <Label className="text-white">Blog System</Label>
+                  <p className="text-sm text-gray-400">Enable blog functionality</p>
                 </div>
-                <div className="flex items-center justify-between">
-                  <div>
-                    <Label className="text-white">Analytics Tracking</Label>
-                    <p className="text-gray-400 text-sm">Enable Google Analytics</p>
-                  </div>
-                  <Switch
-                    checked={settings.features.analytics}
-                    onCheckedChange={(checked) =>
-                      setSettings({
-                        ...settings,
-                        features: { ...settings.features, analytics: checked },
-                      })
-                    }
-                  />
+                <Switch
+                  checked={settings.features.blog}
+                  onCheckedChange={(checked) =>
+                    setSettings({
+                      ...settings,
+                      features: { ...settings.features, blog: checked },
+                    })
+                  }
+                />
+              </div>
+              <Separator className="bg-white/10" />
+              <div className="flex items-center justify-between">
+                <div>
+                  <Label className="text-white">Analytics Tracking</Label>
+                  <p className="text-sm text-gray-400">Enable Google Analytics</p>
                 </div>
-                <div className="flex items-center justify-between">
-                  <div>
-                    <Label className="text-white">Maintenance Mode</Label>
-                    <p className="text-gray-400 text-sm">Put site in maintenance mode</p>
-                  </div>
-                  <Switch
-                    checked={settings.features.maintenance}
-                    onCheckedChange={(checked) =>
-                      setSettings({
-                        ...settings,
-                        features: { ...settings.features, maintenance: checked },
-                      })
-                    }
-                  />
+                <Switch
+                  checked={settings.features.analytics}
+                  onCheckedChange={(checked) =>
+                    setSettings({
+                      ...settings,
+                      features: { ...settings.features, analytics: checked },
+                    })
+                  }
+                />
+              </div>
+              <Separator className="bg-white/10" />
+              <div className="flex items-center justify-between">
+                <div>
+                  <Label className="text-white">Maintenance Mode</Label>
+                  <p className="text-sm text-gray-400">Put site in maintenance mode</p>
                 </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
+                <Switch
+                  checked={settings.features.maintenanceMode}
+                  onCheckedChange={(checked) =>
+                    setSettings({
+                      ...settings,
+                      features: { ...settings.features, maintenanceMode: checked },
+                    })
+                  }
+                />
+              </div>
+            </CardContent>
+          </Card>
 
-          <TabsContent value="social">
-            <Card className="glass border-white/20">
-              <CardHeader>
-                <CardTitle className="text-white">Social Media Settings</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-6">
+          {/* Social Media */}
+          <Card className="glass border-white/20">
+            <CardHeader>
+              <CardTitle className="text-white">Social Media</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div className="space-y-2">
                   <Label htmlFor="twitter" className="text-white">
                     Twitter Handle
@@ -300,7 +293,7 @@ export default function AdminSettings() {
                   </Label>
                   <Input
                     id="linkedin"
-                    placeholder="company-name"
+                    placeholder="company/name"
                     value={settings.social.linkedin}
                     onChange={(e) =>
                       setSettings({
@@ -328,10 +321,10 @@ export default function AdminSettings() {
                     className="glass border-white/20 text-white"
                   />
                 </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-        </Tabs>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
       </div>
     </div>
   )

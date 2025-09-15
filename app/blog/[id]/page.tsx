@@ -1,76 +1,33 @@
 "use client"
 
 import { useParams } from "next/navigation"
+import { useEffect, useState } from "react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Calendar, User, Clock, ArrowLeft, Share2 } from "lucide-react"
 import Link from "next/link"
 import { Sparkles } from "lucide-react"
+import { getBlogPost } from "@/lib/content-store"
+import type { BlogPost } from "@/lib/content-store" // Renamed import to avoid redeclaration
 
-export default function BlogPost() {
+export default function BlogPostComponent() {
+  // Renamed function to avoid redeclaration
   const params = useParams()
+  const [post, setPost] = useState<BlogPost | null>(null)
 
-  // Mock blog post data - in a real app, this would be fetched based on the ID
-  const post = {
-    id: 1,
-    title: "AI Trading Strategies for 2024",
-    excerpt:
-      "Discover the latest AI-powered trading strategies that are revolutionizing the financial markets and how you can implement them in your trading routine.",
-    content: `# AI Trading Strategies for 2024
+  useEffect(() => {
+    const postId = Number.parseInt(params.id as string)
+    const blogPost = getBlogPost(postId)
+    setPost(blogPost || null)
+  }, [params.id])
 
-The world of trading is rapidly evolving, and artificial intelligence is at the forefront of this transformation. In 2024, we're seeing unprecedented developments in AI-powered trading strategies that are changing how both institutional and retail investors approach the markets.
-
-## Key AI Trading Strategies
-
-### 1. Machine Learning Pattern Recognition
-Advanced algorithms can now identify complex patterns in market data that human traders might miss. These systems analyze:
-- Historical price movements
-- Volume patterns
-- Market sentiment indicators
-- News and social media sentiment
-
-### 2. Predictive Analytics
-AI models use vast amounts of data to predict future market movements with increasing accuracy:
-- Economic indicators
-- Company fundamentals
-- Technical analysis
-- Global events impact
-
-### 3. Risk Management Automation
-AI-powered risk management systems can:
-- Automatically adjust position sizes
-- Set dynamic stop-losses
-- Diversify portfolios in real-time
-- Monitor correlation risks
-
-## Getting Started with AI Trading
-
-If you're interested in incorporating AI into your trading strategy, consider these steps:
-
-1. **Education**: Learn about machine learning and its applications in finance
-2. **Start Small**: Begin with paper trading or small positions
-3. **Use Established Platforms**: Consider platforms like Stocx AI that offer proven AI trading tools
-4. **Monitor Performance**: Track your AI-assisted trades vs. traditional methods
-
-## The Future of AI Trading
-
-As we move through 2024, we expect to see:
-- More sophisticated neural networks
-- Better integration with real-time data
-- Improved natural language processing for news analysis
-- Enhanced risk management capabilities
-
-## Conclusion
-
-AI trading strategies are not just the future—they're the present. As these technologies continue to evolve, traders who adapt and integrate AI into their strategies will have a significant advantage in the markets.
-
-Remember, while AI can provide powerful insights, it's important to understand the technology and maintain proper risk management practices.`,
-    author: "Stocx AI Team",
-    date: "2024-01-15",
-    readTime: "5 min read",
-    tags: ["AI", "Trading", "Strategies"],
-    image: "/placeholder.jpg",
+  if (!post) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 flex items-center justify-center">
+        <div className="text-white">Post not found</div>
+      </div>
+    )
   }
 
   return (

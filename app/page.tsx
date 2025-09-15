@@ -29,6 +29,7 @@ import {
   QrCode,
 } from "lucide-react"
 import { subscribeToNewsletter } from "./actions/subscribe"
+import { getWebsiteContent, type WebsiteContent } from "@/lib/content-store"
 
 export default function HomePage() {
   const [email, setEmail] = useState("")
@@ -37,11 +38,31 @@ export default function HomePage() {
   const [searchQuery, setSearchQuery] = useState("")
   const [isIOS, setIsIOS] = useState(false)
   const [isAndroid, setIsAndroid] = useState(false)
+  const [content, setContent] = useState<WebsiteContent | null>(null)
 
   useEffect(() => {
+    // Load content from store
+    const loadContent = () => {
+      const websiteContent = getWebsiteContent()
+      setContent(websiteContent)
+    }
+
+    loadContent()
+
+    // Listen for content updates
+    const handleContentUpdate = (event: CustomEvent) => {
+      setContent(event.detail)
+    }
+
+    window.addEventListener("contentUpdated", handleContentUpdate as EventListener)
+
     const userAgent = navigator.userAgent.toLowerCase()
     setIsIOS(/iphone|ipad|ipod/.test(userAgent))
     setIsAndroid(/android/.test(userAgent))
+
+    return () => {
+      window.removeEventListener("contentUpdated", handleContentUpdate as EventListener)
+    }
   }, [])
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -178,6 +199,15 @@ export default function HomePage() {
     return "App Store"
   }
 
+  // Show loading state while content is loading
+  if (!content) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 flex items-center justify-center">
+        <div className="text-white">Loading...</div>
+      </div>
+    )
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900">
       {/* Navigation */}
@@ -252,17 +282,14 @@ export default function HomePage() {
             <Badge className="mb-6 bg-primary/10 text-primary border-primary/20">
               🚀 Now Available on iOS & Android
             </Badge>
-            <h1 className="text-hero text-gradient mb-6 animate-fade-in">Trade Smarter with AI-Powered Insights</h1>
-            <p className="text-xl text-white/70 mb-8 max-w-2xl mx-auto animate-slide-up">
-              Revolutionize your trading strategy with advanced machine learning algorithms that analyze market patterns
-              and deliver real-time insights directly to your mobile device.
-            </p>
+            <h1 className="text-hero text-gradient mb-6 animate-fade-in">{content.hero.title}</h1>
+            <p className="text-xl text-white/70 mb-8 max-w-2xl mx-auto animate-slide-up">{content.hero.subtitle}</p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center animate-slide-up">
               <Dialog>
                 <DialogTrigger asChild>
                   <Button size="lg" className="btn-modern btn-primary text-lg px-8 py-4">
                     <Smartphone className="w-5 h-5 mr-2" />
-                    Download for {getAppStoreName()}
+                    {content.hero.ctaText}
                   </Button>
                 </DialogTrigger>
                 <DialogContent className="glass border border-white/20">
@@ -311,10 +338,8 @@ export default function HomePage() {
       <section id="features" className="section-padding">
         <div className="container-modern">
           <div className="text-center mb-16">
-            <h2 className="text-section-title text-gradient mb-4">Everything you need to trade smarter</h2>
-            <p className="text-xl text-white/70 max-w-2xl mx-auto">
-              Powerful AI-driven features designed to give you the edge in today's fast-moving markets.
-            </p>
+            <h2 className="text-section-title text-gradient mb-4">{content.features.title}</h2>
+            <p className="text-xl text-white/70 max-w-2xl mx-auto">{content.features.subtitle}</p>
           </div>
           <div className="grid-cards">
             {features.map((feature, index) => (
@@ -337,19 +362,19 @@ export default function HomePage() {
         <div className="container-modern">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             <div className="text-center">
-              <div className="text-4xl font-bold text-gradient-green mb-2">50K+</div>
+              <div className="text-4xl font-bold text-gradient-green mb-2">{content.stats.activeTraders}</div>
               <div className="text-white/70">Active Traders</div>
             </div>
             <div className="text-center">
-              <div className="text-4xl font-bold text-gradient-green mb-2">$2.5B+</div>
+              <div className="text-4xl font-bold text-gradient-green mb-2">{content.stats.volumeTraded}</div>
               <div className="text-white/70">Volume Traded</div>
             </div>
             <div className="text-center">
-              <div className="text-4xl font-bold text-gradient-green mb-2">94%</div>
+              <div className="text-4xl font-bold text-gradient-green mb-2">{content.stats.accuracyRate}</div>
               <div className="text-white/70">Accuracy Rate</div>
             </div>
             <div className="text-center">
-              <div className="text-4xl font-bold text-gradient-green mb-2">24/7</div>
+              <div className="text-4xl font-bold text-gradient-green mb-2">{content.stats.marketCoverage}</div>
               <div className="text-white/70">Market Coverage</div>
             </div>
           </div>
@@ -360,10 +385,8 @@ export default function HomePage() {
       <section id="testimonials" className="section-padding">
         <div className="container-modern">
           <div className="text-center mb-16">
-            <h2 className="text-section-title text-gradient mb-4">Trusted by traders worldwide</h2>
-            <p className="text-xl text-white/70 max-w-2xl mx-auto">
-              See what our community of successful traders has to say about Stocx AI.
-            </p>
+            <h2 className="text-section-title text-gradient mb-4">{content.about.title}</h2>
+            <p className="text-xl text-white/70 max-w-2xl mx-auto">{content.about.description}</p>
           </div>
           <div className="grid-cards">
             {testimonials.map((testimonial, index) => (
@@ -484,7 +507,7 @@ export default function HomePage() {
                 <h3 className="font-semibold text-white mb-2">Email Support</h3>
                 <p className="text-white/70 text-sm mb-4">Get help via email</p>
                 <Button variant="outline" size="sm" className="btn-modern btn-secondary bg-transparent">
-                  support@stocx.ai
+                  {content.contact.email}
                 </Button>
               </CardContent>
             </Card>
@@ -504,7 +527,7 @@ export default function HomePage() {
                 <h3 className="font-semibold text-white mb-2">Phone Support</h3>
                 <p className="text-white/70 text-sm mb-4">Call us directly</p>
                 <Button variant="outline" size="sm" className="btn-modern btn-secondary bg-transparent">
-                  +1 (555) 123-4567
+                  {content.contact.phone}
                 </Button>
               </CardContent>
             </Card>
@@ -571,7 +594,7 @@ export default function HomePage() {
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="hover:text-white transition-colors">
+                  <a href="/blog" className="hover:text-white transition-colors">
                     Blog
                   </a>
                 </li>

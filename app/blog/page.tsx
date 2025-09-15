@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
@@ -8,61 +8,32 @@ import { Button } from "@/components/ui/button"
 import { Search, Calendar, User, ArrowRight, Clock } from "lucide-react"
 import Link from "next/link"
 import { Sparkles } from "lucide-react"
+import { getBlogPosts, type BlogPost } from "@/lib/content-store"
 
 export default function BlogPage() {
   const [searchQuery, setSearchQuery] = useState("")
+  const [blogPosts, setBlogPosts] = useState<BlogPost[]>([])
 
-  const blogPosts = [
-    {
-      id: 1,
-      title: "AI Trading Strategies for 2024",
-      excerpt:
-        "Discover the latest AI-powered trading strategies that are revolutionizing the financial markets and how you can implement them in your trading routine.",
-      content:
-        "The world of trading is rapidly evolving, and artificial intelligence is at the forefront of this transformation...",
-      author: "Stocx AI Team",
-      date: "2024-01-15",
-      readTime: "5 min read",
-      tags: ["AI", "Trading", "Strategies"],
-      image: "/placeholder.jpg",
-    },
-    {
-      id: 2,
-      title: "Market Analysis: Tech Stocks Outlook",
-      excerpt:
-        "An in-depth analysis of technology stocks and their potential performance in the coming quarter, including key indicators to watch.",
-      content: "Technology stocks have been showing interesting patterns lately...",
-      author: "Stocx AI Team",
-      date: "2024-01-14",
-      readTime: "7 min read",
-      tags: ["Market Analysis", "Tech Stocks", "Outlook"],
-      image: "/placeholder.jpg",
-    },
-    {
-      id: 3,
-      title: "Risk Management in Volatile Markets",
-      excerpt:
-        "Learn essential risk management techniques to protect your investments during market volatility and uncertain economic conditions.",
-      content: "Risk management is crucial for successful trading...",
-      author: "Stocx AI Team",
-      date: "2024-01-13",
-      readTime: "6 min read",
-      tags: ["Risk Management", "Volatility", "Investment"],
-      image: "/placeholder.jpg",
-    },
-    {
-      id: 4,
-      title: "Cryptocurrency Trading with AI",
-      excerpt:
-        "How artificial intelligence is changing the way we trade cryptocurrencies and digital assets, with practical tips for getting started.",
-      content: "Cryptocurrency markets never sleep, making them perfect for AI trading systems...",
-      author: "Stocx AI Team",
-      date: "2024-01-12",
-      readTime: "8 min read",
-      tags: ["Cryptocurrency", "AI", "Digital Assets"],
-      image: "/placeholder.jpg",
-    },
-  ]
+  useEffect(() => {
+    const loadPosts = () => {
+      const posts = getBlogPosts().filter((post) => post.status === "published")
+      setBlogPosts(posts)
+    }
+
+    loadPosts()
+
+    // Listen for blog updates
+    const handleBlogUpdate = (event: CustomEvent) => {
+      const posts = event.detail.filter((post: BlogPost) => post.status === "published")
+      setBlogPosts(posts)
+    }
+
+    window.addEventListener("blogUpdated", handleBlogUpdate as EventListener)
+
+    return () => {
+      window.removeEventListener("blogUpdated", handleBlogUpdate as EventListener)
+    }
+  }, [])
 
   const filteredPosts = blogPosts.filter(
     (post) =>

@@ -8,49 +8,14 @@ import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
 import { PlusCircle, Search, Edit, Trash2, Eye, ArrowLeft, Calendar, User } from "lucide-react"
 import Link from "next/link"
+import { getBlogPosts, deleteBlogPost, type BlogPost } from "@/lib/content-store"
+import { toast } from "@/hooks/use-toast"
 
 export default function BlogManager() {
   const router = useRouter()
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [searchQuery, setSearchQuery] = useState("")
-  const [posts, setPosts] = useState([
-    {
-      id: 1,
-      title: "AI Trading Strategies for 2024",
-      excerpt: "Discover the latest AI-powered trading strategies that are revolutionizing the financial markets...",
-      status: "published",
-      author: "Admin",
-      date: "2024-01-15",
-      views: 1250,
-    },
-    {
-      id: 2,
-      title: "Market Analysis: Tech Stocks Outlook",
-      excerpt: "An in-depth analysis of technology stocks and their potential performance in the coming quarter...",
-      status: "draft",
-      author: "Admin",
-      date: "2024-01-14",
-      views: 0,
-    },
-    {
-      id: 3,
-      title: "Risk Management in Volatile Markets",
-      excerpt: "Learn essential risk management techniques to protect your investments during market volatility...",
-      status: "published",
-      author: "Admin",
-      date: "2024-01-13",
-      views: 890,
-    },
-    {
-      id: 4,
-      title: "Cryptocurrency Trading with AI",
-      excerpt: "How artificial intelligence is changing the way we trade cryptocurrencies and digital assets...",
-      status: "published",
-      author: "Admin",
-      date: "2024-01-12",
-      views: 2100,
-    },
-  ])
+  const [posts, setPosts] = useState<BlogPost[]>([])
 
   useEffect(() => {
     const auth = localStorage.getItem("admin_authenticated")
@@ -58,8 +23,25 @@ export default function BlogManager() {
       router.push("/admin/login")
     } else {
       setIsAuthenticated(true)
+      loadPosts()
+    }
+
+    // Listen for blog updates
+    const handleBlogUpdate = (event: CustomEvent) => {
+      setPosts(event.detail)
+    }
+
+    window.addEventListener("blogUpdated", handleBlogUpdate as EventListener)
+
+    return () => {
+      window.removeEventListener("blogUpdated", handleBlogUpdate as EventListener)
     }
   }, [router])
+
+  const loadPosts = () => {
+    const blogPosts = getBlogPosts()
+    setPosts(blogPosts)
+  }
 
   const filteredPosts = posts.filter(
     (post) =>
@@ -69,7 +51,14 @@ export default function BlogManager() {
 
   const handleDelete = (id: number) => {
     if (confirm("Are you sure you want to delete this post?")) {
-      setPosts(posts.filter((post) => post.id !== id))
+      const success = deleteBlogPost(id)
+      if (success) {
+        toast({
+          title: "Post Deleted",
+          description: "The blog post has been successfully deleted.",
+        })
+        loadPosts()
+      }
     }
   }
 

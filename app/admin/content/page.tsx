@@ -11,33 +11,13 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { toast } from "@/hooks/use-toast"
 import { Save, ArrowLeft } from "lucide-react"
 import Link from "next/link"
+import { getWebsiteContent, updateWebsiteContent, type WebsiteContent } from "@/lib/content-store"
 
 export default function ContentEditor() {
   const router = useRouter()
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [isSaving, setIsSaving] = useState(false)
-  const [content, setContent] = useState({
-    hero: {
-      title: "Trade Smarter with AI-Powered Insights",
-      subtitle:
-        "Revolutionize your trading strategy with advanced machine learning algorithms that analyze market patterns and deliver real-time insights directly to your mobile device.",
-      ctaText: "Download for App Store",
-    },
-    features: {
-      title: "Everything you need to trade smarter",
-      subtitle: "Powerful AI-driven features designed to give you the edge in today's fast-moving markets.",
-    },
-    about: {
-      title: "Trusted by traders worldwide",
-      description:
-        "Founded by a team of experienced traders and AI researchers, Stocx AI was born from the vision of democratizing advanced trading intelligence.",
-    },
-    contact: {
-      email: "support@stocx.ai",
-      phone: "+1 (555) 123-4567",
-      address: "San Francisco, CA",
-    },
-  })
+  const [content, setContent] = useState<WebsiteContent | null>(null)
 
   useEffect(() => {
     const auth = localStorage.getItem("admin_authenticated")
@@ -45,24 +25,31 @@ export default function ContentEditor() {
       router.push("/admin/login")
     } else {
       setIsAuthenticated(true)
+      const websiteContent = getWebsiteContent()
+      setContent(websiteContent)
     }
   }, [router])
 
   const handleSave = async () => {
+    if (!content) return
+
     setIsSaving(true)
 
-    // Simulate saving to database
+    // Update the content store
+    updateWebsiteContent(content)
+
+    // Simulate API call delay
     await new Promise((resolve) => setTimeout(resolve, 1000))
 
     toast({
       title: "Content Updated",
-      description: "Website content has been successfully updated.",
+      description: "Website content has been successfully updated and is now live!",
     })
 
     setIsSaving(false)
   }
 
-  if (!isAuthenticated) {
+  if (!isAuthenticated || !content) {
     return <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900" />
   }
 
@@ -91,7 +78,7 @@ export default function ContentEditor() {
         </div>
 
         <Tabs defaultValue="hero" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4 bg-white/10">
+          <TabsList className="grid w-full grid-cols-5 bg-white/10">
             <TabsTrigger
               value="hero"
               className="text-white data-[state=active]:bg-green-500 data-[state=active]:text-black"
@@ -115,6 +102,12 @@ export default function ContentEditor() {
               className="text-white data-[state=active]:bg-green-500 data-[state=active]:text-black"
             >
               Contact
+            </TabsTrigger>
+            <TabsTrigger
+              value="stats"
+              className="text-white data-[state=active]:bg-green-500 data-[state=active]:text-black"
+            >
+              Stats
             </TabsTrigger>
           </TabsList>
 
@@ -316,6 +309,82 @@ export default function ContentEditor() {
                     }
                     className="glass border-white/20 text-white"
                   />
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="stats">
+            <Card className="glass border-white/20">
+              <CardHeader>
+                <CardTitle className="text-white">Statistics Section</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <Label htmlFor="stats-traders" className="text-white">
+                      Active Traders
+                    </Label>
+                    <Input
+                      id="stats-traders"
+                      value={content.stats.activeTraders}
+                      onChange={(e) =>
+                        setContent({
+                          ...content,
+                          stats: { ...content.stats, activeTraders: e.target.value },
+                        })
+                      }
+                      className="glass border-white/20 text-white"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="stats-volume" className="text-white">
+                      Volume Traded
+                    </Label>
+                    <Input
+                      id="stats-volume"
+                      value={content.stats.volumeTraded}
+                      onChange={(e) =>
+                        setContent({
+                          ...content,
+                          stats: { ...content.stats, volumeTraded: e.target.value },
+                        })
+                      }
+                      className="glass border-white/20 text-white"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="stats-accuracy" className="text-white">
+                      Accuracy Rate
+                    </Label>
+                    <Input
+                      id="stats-accuracy"
+                      value={content.stats.accuracyRate}
+                      onChange={(e) =>
+                        setContent({
+                          ...content,
+                          stats: { ...content.stats, accuracyRate: e.target.value },
+                        })
+                      }
+                      className="glass border-white/20 text-white"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="stats-coverage" className="text-white">
+                      Market Coverage
+                    </Label>
+                    <Input
+                      id="stats-coverage"
+                      value={content.stats.marketCoverage}
+                      onChange={(e) =>
+                        setContent({
+                          ...content,
+                          stats: { ...content.stats, marketCoverage: e.target.value },
+                        })
+                      }
+                      className="glass border-white/20 text-white"
+                    />
+                  </div>
                 </div>
               </CardContent>
             </Card>

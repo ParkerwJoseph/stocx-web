@@ -11,6 +11,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { toast } from "@/hooks/use-toast"
 import { Save, ArrowLeft, Eye } from "lucide-react"
 import Link from "next/link"
+import { createBlogPost } from "@/lib/content-store"
 
 export default function NewBlogPost() {
   const router = useRouter()
@@ -20,7 +21,7 @@ export default function NewBlogPost() {
     title: "",
     excerpt: "",
     content: "",
-    status: "draft",
+    status: "draft" as "draft" | "published",
     tags: "",
     featuredImage: "",
   })
@@ -34,7 +35,7 @@ export default function NewBlogPost() {
     }
   }, [router])
 
-  const handleSave = async (status: string) => {
+  const handleSave = async (status: "draft" | "published") => {
     if (!post.title || !post.content) {
       toast({
         title: "Error",
@@ -46,16 +47,37 @@ export default function NewBlogPost() {
 
     setIsSaving(true)
 
-    // Simulate saving to database
-    await new Promise((resolve) => setTimeout(resolve, 1000))
+    try {
+      const newPost = createBlogPost({
+        title: post.title,
+        excerpt: post.excerpt,
+        content: post.content,
+        status: status,
+        author: "Admin",
+        date: new Date().toISOString().split("T")[0],
+        readTime: `${Math.ceil(post.content.split(" ").length / 200)} min read`,
+        tags: post.tags
+          .split(",")
+          .map((tag) => tag.trim())
+          .filter((tag) => tag),
+        featuredImage: post.featuredImage || "/placeholder.jpg",
+      })
 
-    toast({
-      title: "Post Saved",
-      description: `Blog post has been ${status === "published" ? "published" : "saved as draft"}.`,
-    })
+      toast({
+        title: "Post Created",
+        description: `Blog post has been ${status === "published" ? "published" : "saved as draft"}.`,
+      })
 
-    setIsSaving(false)
-    router.push("/admin/blog")
+      router.push("/admin/blog")
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to create blog post. Please try again.",
+        variant: "destructive",
+      })
+    } finally {
+      setIsSaving(false)
+    }
   }
 
   if (!isAuthenticated) {
@@ -160,7 +182,10 @@ export default function NewBlogPost() {
                   <Label htmlFor="status" className="text-white">
                     Status
                   </Label>
-                  <Select value={post.status} onValueChange={(value) => setPost({ ...post, status: value })}>
+                  <Select
+                    value={post.status}
+                    onValueChange={(value: "draft" | "published") => setPost({ ...post, status: value })}
+                  >
                     <SelectTrigger className="glass border-white/20 text-white">
                       <SelectValue />
                     </SelectTrigger>
