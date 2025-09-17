@@ -24,7 +24,6 @@ import {
   Star,
   Mail,
   MessageSquare,
-  Phone,
   ExternalLink,
   QrCode,
 } from "lucide-react"
@@ -88,58 +87,63 @@ export default function HomePage() {
   const features = [
     {
       icon: <Brain className="w-8 h-8" />,
-      title: "AI-Powered Analysis",
+      title: "AI Chart Scanning",
       description:
-        "Advanced machine learning algorithms analyze market patterns and predict trends with unprecedented accuracy.",
+        "Take a screenshot of any stock chart and let AI break it down for you. Get instant explanations of patterns, trends, and key signals.",
     },
     {
       icon: <TrendingUp className="w-8 h-8" />,
-      title: "Real-Time Insights",
+      title: "Pattern Recognition",
       description:
-        "Get instant market updates and trading signals delivered directly to your device as opportunities arise.",
-    },
-    {
-      icon: <Shield className="w-8 h-8" />,
-      title: "Risk Management",
-      description:
-        "Intelligent risk assessment tools help protect your investments with automated stop-loss recommendations.",
+        "Identify formations like flags, triangles, and support/resistance levels in seconds. Learn to spot opportunities faster.",
     },
     {
       icon: <Target className="w-8 h-8" />,
-      title: "Precision Trading",
-      description: "Execute trades with pinpoint accuracy using our advanced order management and execution system.",
-    },
-    {
-      icon: <BarChart3 className="w-8 h-8" />,
-      title: "Portfolio Analytics",
-      description: "Comprehensive portfolio tracking with detailed performance metrics and optimization suggestions.",
+      title: "Beginner-Friendly Explanations",
+      description:
+        "No jargon — just clear, simple language that makes learning technical analysis easy and accessible for everyone.",
     },
     {
       icon: <Zap className="w-8 h-8" />,
-      title: "Lightning Fast",
-      description: "Ultra-low latency execution ensures you never miss a trading opportunity in volatile markets.",
+      title: "Learning Over Time",
+      description:
+        "The more you use Stocx AI, the smarter your insights get. Build your chart reading skills progressively.",
+    },
+    {
+      icon: <Smartphone className="w-8 h-8" />,
+      title: "On-the-Go Learning",
+      description:
+        "All you need is your iPhone — no complicated platforms required. Learn technical analysis anywhere, anytime.",
+    },
+    {
+      icon: <BarChart3 className="w-8 h-8" />,
+      title: "Visual Learning",
+      description:
+        "Understand technical analysis through visual explanations, not textbooks. See patterns highlighted and explained instantly.",
     },
   ]
 
   const testimonials = [
     {
-      name: "Sarah Chen",
+      name: "Alex M.",
+      role: "New Trader",
+      content:
+        "Finally, an app that makes technical analysis simple. I just snap a chart and get the explanation right away.",
+      rating: 5,
+      avatar: "/placeholder-user.jpg",
+    },
+    {
+      name: "Priya K.",
+      role: "Learning Investor",
+      content: "I never understood trendlines until I used Stocx AI. It's like having a tutor in your pocket.",
+      rating: 5,
+      avatar: "/placeholder-user.jpg",
+    },
+    {
+      name: "Marcus R.",
       role: "Day Trader",
-      content: "Stocx AI has completely transformed my trading strategy. The AI insights are incredibly accurate.",
-      rating: 5,
-      avatar: "/placeholder-user.jpg",
-    },
-    {
-      name: "Michael Rodriguez",
-      role: "Portfolio Manager",
-      content: "The risk management features alone have saved me thousands. This app is a game-changer.",
-      rating: 5,
-      avatar: "/placeholder-user.jpg",
-    },
-    {
-      name: "Emily Johnson",
-      role: "Crypto Investor",
-      content: "Finally, an AI trading app that actually delivers on its promises. Highly recommended!",
+      content:
+        "Perfect for beginners but useful for experts too. The AI explanations help me spot patterns I might miss.",
       rating: 5,
       avatar: "/placeholder-user.jpg",
     },
@@ -147,34 +151,34 @@ export default function HomePage() {
 
   const faqs = [
     {
-      question: "How does Stocx AI's machine learning work?",
+      question: "What devices does Stocx AI work on?",
       answer:
-        "Our AI analyzes millions of data points including market trends, news sentiment, technical indicators, and historical patterns to generate trading insights and predictions.",
+        "Stocx AI is currently available for iPhone on the App Store. We're working on expanding to other platforms in the future.",
     },
     {
-      question: "Is my financial data secure?",
+      question: "Can it predict stock prices?",
       answer:
-        "Yes, we use bank-level encryption and security measures. Your data is protected with 256-bit SSL encryption and we never store your trading passwords or sensitive financial information.",
+        "No, Stocx AI is for education, not financial advice. It helps you learn chart analysis and understand technical patterns, but doesn't make price predictions.",
     },
     {
-      question: "Can I use Stocx AI for cryptocurrency trading?",
+      question: "Do I need trading experience to use the app?",
       answer:
-        "Stocx AI supports major cryptocurrencies including Bitcoin, Ethereum, and many altcoins across multiple exchanges.",
+        "Not at all! The app is designed for complete beginners as well as experienced traders wanting to sharpen their technical analysis skills.",
     },
     {
-      question: "What's the minimum investment required?",
+      question: "How does the AI chart scanning work?",
       answer:
-        "There's no minimum investment required to use Stocx AI. You can start with any amount and scale up as you become more comfortable with the platform.",
+        "Simply take a screenshot of any stock chart or upload an image to the app. Our AI will analyze the chart and explain key patterns, trends, and technical indicators in simple terms.",
     },
     {
-      question: "Do you offer customer support?",
+      question: "Is there a free version available?",
       answer:
-        "Yes, we provide 24/7 customer support through in-app chat, email, and phone. Our team of trading experts is always ready to help.",
+        "Yes! You can start with our free Starter plan that includes basic chart scanning and insights. Upgrade to Pro for advanced patterns and unlimited scans.",
     },
     {
-      question: "Can I cancel my subscription anytime?",
+      question: "What types of charts can I scan?",
       answer:
-        "Yes, you can cancel your subscription at any time through the app settings or by contacting our support team. No cancellation fees apply.",
+        "Stocx AI works with most stock chart formats including candlestick charts, line charts, and bar charts from popular trading platforms and financial websites.",
     },
   ]
 
@@ -185,17 +189,10 @@ export default function HomePage() {
   )
 
   const getAppStoreLink = () => {
-    if (isIOS) {
-      return "https://apps.apple.com/app/stocx-ai"
-    } else if (isAndroid) {
-      return "https://play.google.com/store/apps/details?id=com.stocx.ai"
-    }
-    return "#"
+    return "https://apps.apple.com/app/stocx-ai"
   }
 
   const getAppStoreName = () => {
-    if (isIOS) return "App Store"
-    if (isAndroid) return "Google Play"
     return "App Store"
   }
 
@@ -224,14 +221,14 @@ export default function HomePage() {
               <a href="#features" className="text-white/70 hover:text-white transition-colors">
                 Features
               </a>
+              <a href="#how-it-works" className="text-white/70 hover:text-white transition-colors">
+                How It Works
+              </a>
               <a href="#testimonials" className="text-white/70 hover:text-white transition-colors">
-                Testimonials
+                Reviews
               </a>
               <a href="#faq" className="text-white/70 hover:text-white transition-colors">
                 FAQ
-              </a>
-              <a href="#contact" className="text-white/70 hover:text-white transition-colors">
-                Contact
               </a>
             </div>
             <Dialog>
@@ -245,28 +242,19 @@ export default function HomePage() {
                 <div className="space-y-6 p-6">
                   <div className="text-center">
                     <QrCode className="w-32 h-32 mx-auto mb-4 text-primary" />
-                    <p className="text-white/70 mb-6">Scan QR code or choose your platform</p>
+                    <p className="text-white/70 mb-6">Scan QR code to download on iPhone</p>
                   </div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="flex justify-center">
                     <Button
                       className="btn-modern btn-primary flex items-center justify-center space-x-2"
                       onClick={() => window.open(getAppStoreLink(), "_blank")}
                     >
                       <Apple className="w-5 h-5" />
-                      <span>App Store</span>
-                    </Button>
-                    <Button
-                      className="btn-modern btn-secondary flex items-center justify-center space-x-2"
-                      onClick={() =>
-                        window.open("https://play.google.com/store/apps/details?id=com.stocx.ai", "_blank")
-                      }
-                    >
-                      <Play className="w-5 h-5" />
-                      <span>Google Play</span>
+                      <span>Download on App Store</span>
                     </Button>
                   </div>
                   <div className="text-center">
-                    <p className="text-sm text-white/50">Available on iOS 14+ and Android 8+</p>
+                    <p className="text-sm text-white/50">Available on iPhone (iOS 14+)</p>
                   </div>
                 </div>
               </DialogContent>
@@ -279,17 +267,18 @@ export default function HomePage() {
       <section className="section-padding pt-32">
         <div className="container-modern">
           <div className="text-center max-w-4xl mx-auto">
-            <Badge className="mb-6 bg-primary/10 text-primary border-primary/20">
-              🚀 Now Available on iOS & Android
-            </Badge>
-            <h1 className="text-hero text-gradient mb-6 animate-fade-in">{content.hero.title}</h1>
-            <p className="text-xl text-white/70 mb-8 max-w-2xl mx-auto animate-slide-up">{content.hero.subtitle}</p>
+            <Badge className="mb-6 bg-primary/10 text-primary border-primary/20">📱 Now Available on iPhone</Badge>
+            <h1 className="text-hero text-gradient mb-6 animate-fade-in">Scan Stock Charts. Learn Faster with AI.</h1>
+            <p className="text-xl text-white/70 mb-8 max-w-2xl mx-auto animate-slide-up">
+              Stocx AI is an iPhone app that helps you understand stock charts instantly. Just snap a screenshot and our
+              AI explains trendlines, patterns, and key signals in simple terms.
+            </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center animate-slide-up">
               <Dialog>
                 <DialogTrigger asChild>
                   <Button size="lg" className="btn-modern btn-primary text-lg px-8 py-4">
-                    <Smartphone className="w-5 h-5 mr-2" />
-                    {content.hero.ctaText}
+                    <Apple className="w-5 h-5 mr-2" />
+                    Download on the App Store
                   </Button>
                 </DialogTrigger>
                 <DialogContent className="glass border border-white/20">
@@ -299,37 +288,29 @@ export default function HomePage() {
                   <div className="space-y-6 p-6">
                     <div className="text-center">
                       <QrCode className="w-32 h-32 mx-auto mb-4 text-primary" />
-                      <p className="text-white/70 mb-6">Scan QR code or choose your platform</p>
+                      <p className="text-white/70 mb-6">Scan QR code to download on iPhone</p>
                     </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="flex justify-center">
                       <Button
                         className="btn-modern btn-primary flex items-center justify-center space-x-2"
                         onClick={() => window.open("https://apps.apple.com/app/stocx-ai", "_blank")}
                       >
                         <Apple className="w-5 h-5" />
-                        <span>App Store</span>
-                      </Button>
-                      <Button
-                        className="btn-modern btn-secondary flex items-center justify-center space-x-2"
-                        onClick={() =>
-                          window.open("https://play.google.com/store/apps/details?id=com.stocx.ai", "_blank")
-                        }
-                      >
-                        <Play className="w-5 h-5" />
-                        <span>Google Play</span>
+                        <span>Download on App Store</span>
                       </Button>
                     </div>
                     <div className="text-center">
-                      <p className="text-sm text-white/50">Available on iOS 14+ and Android 8+</p>
+                      <p className="text-sm text-white/50">Available on iPhone (iOS 14+)</p>
                     </div>
                   </div>
                 </DialogContent>
               </Dialog>
               <Button size="lg" variant="outline" className="btn-modern btn-secondary text-lg px-8 py-4 bg-transparent">
                 <Play className="w-5 h-5 mr-2" />
-                Watch Demo
+                See How It Works
               </Button>
             </div>
+            <p className="text-sm text-white/50 mt-6">Trusted by thousands of new and experienced traders worldwide</p>
           </div>
         </div>
       </section>
@@ -338,8 +319,10 @@ export default function HomePage() {
       <section id="features" className="section-padding">
         <div className="container-modern">
           <div className="text-center mb-16">
-            <h2 className="text-section-title text-gradient mb-4">{content.features.title}</h2>
-            <p className="text-xl text-white/70 max-w-2xl mx-auto">{content.features.subtitle}</p>
+            <h2 className="text-section-title text-gradient mb-4">Everything you need to learn chart analysis</h2>
+            <p className="text-xl text-white/70 max-w-2xl mx-auto">
+              Powerful AI-driven features designed to make technical analysis simple and accessible for everyone.
+            </p>
           </div>
           <div className="grid-cards">
             {features.map((feature, index) => (
@@ -357,36 +340,125 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Stats Section */}
-      <section className="section-padding bg-gradient-to-r from-primary/5 to-primary/10">
+      {/* How It Works Section */}
+      <section id="how-it-works" className="section-padding bg-gradient-to-r from-primary/5 to-primary/10">
         <div className="container-modern">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+          <div className="text-center mb-16">
+            <h2 className="text-section-title text-gradient mb-4">How It Works</h2>
+            <p className="text-xl text-white/70 max-w-2xl mx-auto">
+              Learning technical analysis has never been easier. Just follow these simple steps.
+            </p>
+          </div>
+          <div className="grid md:grid-cols-5 gap-8">
             <div className="text-center">
-              <div className="text-4xl font-bold text-gradient-green mb-2">{content.stats.activeTraders}</div>
-              <div className="text-white/70">Active Traders</div>
+              <div className="w-16 h-16 bg-primary/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                <span className="text-2xl font-bold text-primary">1</span>
+              </div>
+              <h3 className="font-semibold text-white mb-2">Open the App</h3>
+              <p className="text-white/70 text-sm">Launch Stocx AI on your iPhone</p>
             </div>
             <div className="text-center">
-              <div className="text-4xl font-bold text-gradient-green mb-2">{content.stats.volumeTraded}</div>
-              <div className="text-white/70">Volume Traded</div>
+              <div className="w-16 h-16 bg-primary/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                <span className="text-2xl font-bold text-primary">2</span>
+              </div>
+              <h3 className="font-semibold text-white mb-2">Upload Chart</h3>
+              <p className="text-white/70 text-sm">Screenshot or upload any stock chart</p>
             </div>
             <div className="text-center">
-              <div className="text-4xl font-bold text-gradient-green mb-2">{content.stats.accuracyRate}</div>
-              <div className="text-white/70">Accuracy Rate</div>
+              <div className="w-16 h-16 bg-primary/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                <span className="text-2xl font-bold text-primary">3</span>
+              </div>
+              <h3 className="font-semibold text-white mb-2">AI Analysis</h3>
+              <p className="text-white/70 text-sm">AI scans and explains key patterns</p>
             </div>
             <div className="text-center">
-              <div className="text-4xl font-bold text-gradient-green mb-2">{content.stats.marketCoverage}</div>
-              <div className="text-white/70">Market Coverage</div>
+              <div className="w-16 h-16 bg-primary/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                <span className="text-2xl font-bold text-primary">4</span>
+              </div>
+              <h3 className="font-semibold text-white mb-2">Learn & Apply</h3>
+              <p className="text-white/70 text-sm">Understand insights and apply to trading</p>
+            </div>
+            <div className="text-center">
+              <div className="w-16 h-16 bg-primary/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                <span className="text-2xl font-bold text-primary">5</span>
+              </div>
+              <h3 className="font-semibold text-white mb-2">Keep Practicing</h3>
+              <p className="text-white/70 text-sm">Build your chart reading skills over time</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Benefits Section */}
+      <section className="section-padding">
+        <div className="container-modern">
+          <div className="text-center mb-16">
+            <h2 className="text-section-title text-gradient mb-4">Why Choose Stocx AI?</h2>
+            <p className="text-xl text-white/70 max-w-2xl mx-auto">
+              Transform how you learn technical analysis with these key benefits.
+            </p>
+          </div>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="text-center">
+              <div className="w-16 h-16 bg-gradient-green rounded-full flex items-center justify-center mx-auto mb-4">
+                <Brain className="w-8 h-8 text-black" />
+              </div>
+              <h3 className="font-semibold text-white mb-2">No Years of Study Required</h3>
+              <p className="text-white/70 text-sm">
+                Understand technical analysis without spending years learning from textbooks
+              </p>
+            </div>
+            <div className="text-center">
+              <div className="w-16 h-16 bg-gradient-green rounded-full flex items-center justify-center mx-auto mb-4">
+                <Target className="w-8 h-8 text-black" />
+              </div>
+              <h3 className="font-semibold text-white mb-2">Visual Learning</h3>
+              <p className="text-white/70 text-sm">Learn through visual explanations, not complicated theory</p>
+            </div>
+            <div className="text-center">
+              <div className="w-16 h-16 bg-gradient-green rounded-full flex items-center justify-center mx-auto mb-4">
+                <Zap className="w-8 h-8 text-black" />
+              </div>
+              <h3 className="font-semibold text-white mb-2">Save Time</h3>
+              <p className="text-white/70 text-sm">
+                Get instant chart analysis instead of spending hours researching patterns
+              </p>
+            </div>
+            <div className="text-center">
+              <div className="w-16 h-16 bg-gradient-green rounded-full flex items-center justify-center mx-auto mb-4">
+                <Smartphone className="w-8 h-8 text-black" />
+              </div>
+              <h3 className="font-semibold text-white mb-2">Perfect for Beginners</h3>
+              <p className="text-white/70 text-sm">Designed for newcomers but useful for experienced traders too</p>
+            </div>
+            <div className="text-center">
+              <div className="w-16 h-16 bg-gradient-green rounded-full flex items-center justify-center mx-auto mb-4">
+                <Shield className="w-8 h-8 text-black" />
+              </div>
+              <h3 className="font-semibold text-white mb-2">Build Confidence</h3>
+              <p className="text-white/70 text-sm">
+                Make more informed trading decisions with better chart understanding
+              </p>
+            </div>
+            <div className="text-center">
+              <div className="w-16 h-16 bg-gradient-green rounded-full flex items-center justify-center mx-auto mb-4">
+                <BarChart3 className="w-8 h-8 text-black" />
+              </div>
+              <h3 className="font-semibold text-white mb-2">Learn Anywhere</h3>
+              <p className="text-white/70 text-sm">Practice chart analysis on-the-go with just your iPhone</p>
             </div>
           </div>
         </div>
       </section>
 
       {/* Testimonials Section */}
-      <section id="testimonials" className="section-padding">
+      <section id="testimonials" className="section-padding bg-gradient-to-r from-primary/5 to-primary/10">
         <div className="container-modern">
           <div className="text-center mb-16">
-            <h2 className="text-section-title text-gradient mb-4">{content.about.title}</h2>
-            <p className="text-xl text-white/70 max-w-2xl mx-auto">{content.about.description}</p>
+            <h2 className="text-section-title text-gradient mb-4">What Our Users Say</h2>
+            <p className="text-xl text-white/70 max-w-2xl mx-auto">
+              See how Stocx AI is helping traders learn technical analysis faster and more effectively.
+            </p>
           </div>
           <div className="grid-cards">
             {testimonials.map((testimonial, index) => (
@@ -416,13 +488,81 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Pricing Section */}
+      <section className="section-padding">
+        <div className="container-modern">
+          <div className="text-center mb-16">
+            <h2 className="text-section-title text-gradient mb-4">Simple Pricing</h2>
+            <p className="text-xl text-white/70 max-w-2xl mx-auto">
+              Start learning for free, upgrade when you're ready for advanced features.
+            </p>
+          </div>
+          <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+            <Card className="card-modern">
+              <CardContent className="p-8">
+                <div className="text-center mb-6">
+                  <h3 className="text-2xl font-bold text-white mb-2">Starter</h3>
+                  <div className="text-4xl font-bold text-gradient-green mb-2">Free</div>
+                  <p className="text-white/70">Perfect for getting started</p>
+                </div>
+                <ul className="space-y-3 mb-8">
+                  <li className="flex items-center text-white/80">
+                    <div className="w-2 h-2 bg-primary rounded-full mr-3"></div>
+                    Scan charts with basic insights
+                  </li>
+                  <li className="flex items-center text-white/80">
+                    <div className="w-2 h-2 bg-primary rounded-full mr-3"></div>5 scans per day
+                  </li>
+                  <li className="flex items-center text-white/80">
+                    <div className="w-2 h-2 bg-primary rounded-full mr-3"></div>
+                    Basic pattern recognition
+                  </li>
+                </ul>
+                <Button className="w-full btn-modern btn-secondary bg-transparent">Get Started Free</Button>
+              </CardContent>
+            </Card>
+            <Card className="card-modern border-primary/50">
+              <CardContent className="p-8">
+                <div className="text-center mb-6">
+                  <Badge className="mb-2 bg-primary/20 text-primary border-primary/30">Most Popular</Badge>
+                  <h3 className="text-2xl font-bold text-white mb-2">Pro</h3>
+                  <div className="text-4xl font-bold text-gradient-green mb-2">
+                    $9.99<span className="text-lg text-white/60">/mo</span>
+                  </div>
+                  <p className="text-white/70">For serious learners</p>
+                </div>
+                <ul className="space-y-3 mb-8">
+                  <li className="flex items-center text-white/80">
+                    <div className="w-2 h-2 bg-primary rounded-full mr-3"></div>
+                    Unlimited chart scans
+                  </li>
+                  <li className="flex items-center text-white/80">
+                    <div className="w-2 h-2 bg-primary rounded-full mr-3"></div>
+                    Advanced pattern recognition
+                  </li>
+                  <li className="flex items-center text-white/80">
+                    <div className="w-2 h-2 bg-primary rounded-full mr-3"></div>
+                    Learning modules & tutorials
+                  </li>
+                  <li className="flex items-center text-white/80">
+                    <div className="w-2 h-2 bg-primary rounded-full mr-3"></div>
+                    Priority support
+                  </li>
+                </ul>
+                <Button className="w-full btn-modern btn-primary">Start Pro Trial</Button>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </section>
+
       {/* FAQ Section */}
-      <section id="faq" className="section-padding">
+      <section id="faq" className="section-padding bg-gradient-to-r from-primary/5 to-primary/10">
         <div className="container-modern">
           <div className="text-center mb-16">
             <h2 className="text-section-title text-gradient mb-4">Frequently Asked Questions</h2>
             <p className="text-xl text-white/70 max-w-2xl mx-auto mb-8">
-              Get answers to common questions about Stocx AI and start trading with confidence.
+              Get answers to common questions about Stocx AI and start learning chart analysis today.
             </p>
             <div className="max-w-md mx-auto">
               <div className="relative">
@@ -462,12 +602,13 @@ export default function HomePage() {
       </section>
 
       {/* Newsletter Section */}
-      <section className="section-padding bg-gradient-to-r from-primary/10 to-primary/5">
+      <section className="section-padding">
         <div className="container-modern">
           <div className="max-w-2xl mx-auto text-center">
-            <h2 className="text-section-title text-gradient mb-4">Stay ahead of the market</h2>
+            <h2 className="text-section-title text-gradient mb-4">Stay Updated</h2>
             <p className="text-xl text-white/70 mb-8">
-              Get exclusive trading insights, market analysis, and early access to new features delivered to your inbox.
+              Get the latest tips on technical analysis, app updates, and exclusive learning content delivered to your
+              inbox.
             </p>
             <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
               <Input
@@ -492,52 +633,42 @@ export default function HomePage() {
       </section>
 
       {/* Contact Section */}
-      <section id="contact" className="section-padding">
+      <section id="contact" className="section-padding bg-gradient-to-r from-primary/5 to-primary/10">
         <div className="container-modern">
           <div className="text-center mb-16">
-            <h2 className="text-section-title text-gradient mb-4">Get in touch</h2>
+            <h2 className="text-section-title text-gradient mb-4">Need Help?</h2>
             <p className="text-xl text-white/70 max-w-2xl mx-auto">
-              Have questions or need support? Our team is here to help you succeed.
+              Have questions about learning technical analysis or need app support? We're here to help.
             </p>
           </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             <Card className="card-modern text-center">
               <CardContent className="p-8">
                 <Mail className="w-8 h-8 text-primary mx-auto mb-4" />
                 <h3 className="font-semibold text-white mb-2">Email Support</h3>
-                <p className="text-white/70 text-sm mb-4">Get help via email</p>
+                <p className="text-white/70 text-sm mb-4">Get help with the app</p>
                 <Button variant="outline" size="sm" className="btn-modern btn-secondary bg-transparent">
-                  {content.contact.email}
+                  support@stocx.ai
                 </Button>
               </CardContent>
             </Card>
             <Card className="card-modern text-center">
               <CardContent className="p-8">
                 <MessageSquare className="w-8 h-8 text-primary mx-auto mb-4" />
-                <h3 className="font-semibold text-white mb-2">Live Chat</h3>
-                <p className="text-white/70 text-sm mb-4">Chat with our team</p>
+                <h3 className="font-semibold text-white mb-2">In-App Support</h3>
+                <p className="text-white/70 text-sm mb-4">Chat directly in the app</p>
                 <Button variant="outline" size="sm" className="btn-modern btn-secondary bg-transparent">
-                  Start Chat
-                </Button>
-              </CardContent>
-            </Card>
-            <Card className="card-modern text-center">
-              <CardContent className="p-8">
-                <Phone className="w-8 h-8 text-primary mx-auto mb-4" />
-                <h3 className="font-semibold text-white mb-2">Phone Support</h3>
-                <p className="text-white/70 text-sm mb-4">Call us directly</p>
-                <Button variant="outline" size="sm" className="btn-modern btn-secondary bg-transparent">
-                  {content.contact.phone}
+                  Open App
                 </Button>
               </CardContent>
             </Card>
             <Card className="card-modern text-center">
               <CardContent className="p-8">
                 <ExternalLink className="w-8 h-8 text-primary mx-auto mb-4" />
-                <h3 className="font-semibold text-white mb-2">Help Center</h3>
-                <p className="text-white/70 text-sm mb-4">Browse our guides</p>
+                <h3 className="font-semibold text-white mb-2">Learning Center</h3>
+                <p className="text-white/70 text-sm mb-4">Tutorials and guides</p>
                 <Button variant="outline" size="sm" className="btn-modern btn-secondary bg-transparent">
-                  Visit Help Center
+                  Visit Center
                 </Button>
               </CardContent>
             </Card>
@@ -556,9 +687,11 @@ export default function HomePage() {
                 </div>
                 <span className="text-xl font-bold text-gradient">Stocx AI</span>
               </div>
-              <p className="text-white/60 text-sm">
-                Revolutionizing trading with AI-powered insights and real-time market analysis.
-              </p>
+              <p className="text-white/60 text-sm mb-4">Learn stock analysis anywhere. Download Stocx AI today.</p>
+              <Button className="btn-modern btn-primary">
+                <Apple className="w-4 h-4 mr-2" />
+                App Store
+              </Button>
             </div>
             <div>
               <h4 className="font-semibold text-white mb-4">Product</h4>
@@ -569,18 +702,18 @@ export default function HomePage() {
                   </a>
                 </li>
                 <li>
+                  <a href="#how-it-works" className="hover:text-white transition-colors">
+                    How It Works
+                  </a>
+                </li>
+                <li>
                   <a href="#" className="hover:text-white transition-colors">
                     Pricing
                   </a>
                 </li>
                 <li>
                   <a href="#" className="hover:text-white transition-colors">
-                    API
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-white transition-colors">
-                    Integrations
+                    Tutorials
                   </a>
                 </li>
               </ul>
@@ -599,12 +732,12 @@ export default function HomePage() {
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="hover:text-white transition-colors">
-                    Careers
+                  <a href="#contact" className="hover:text-white transition-colors">
+                    Support
                   </a>
                 </li>
                 <li>
-                  <a href="#contact" className="hover:text-white transition-colors">
+                  <a href="#" className="hover:text-white transition-colors">
                     Contact
                   </a>
                 </li>

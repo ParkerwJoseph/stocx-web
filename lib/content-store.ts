@@ -40,22 +40,21 @@ export interface BlogPost {
   views: number
 }
 
-// Default content
+// Default content updated for chart scanning app
 const defaultContent: WebsiteContent = {
   hero: {
-    title: "Trade Smarter with AI-Powered Insights",
+    title: "Scan Stock Charts. Learn Faster with AI.",
     subtitle:
-      "Revolutionize your trading strategy with advanced machine learning algorithms that analyze market patterns and deliver real-time insights directly to your mobile device.",
-    ctaText: "Download for App Store",
+      "Stocx AI is an iPhone app that helps you understand stock charts instantly. Just snap a screenshot and our AI explains trendlines, patterns, and key signals in simple terms.",
+    ctaText: "Download on the App Store",
   },
   features: {
-    title: "Everything you need to trade smarter",
-    subtitle: "Powerful AI-driven features designed to give you the edge in today's fast-moving markets.",
+    title: "Everything you need to learn chart analysis",
+    subtitle: "Powerful AI-driven features designed to make technical analysis simple and accessible for everyone.",
   },
   about: {
-    title: "Trusted by traders worldwide",
-    description:
-      "Founded by a team of experienced traders and AI researchers, Stocx AI was born from the vision of democratizing advanced trading intelligence.",
+    title: "What Our Users Say",
+    description: "See how Stocx AI is helping traders learn technical analysis faster and more effectively.",
   },
   contact: {
     email: "support@stocx.ai",
@@ -63,167 +62,163 @@ const defaultContent: WebsiteContent = {
     address: "San Francisco, CA",
   },
   stats: {
-    activeTraders: "50K+",
-    volumeTraded: "$2.5B+",
-    accuracyRate: "94%",
-    marketCoverage: "24/7",
+    activeTraders: "10K+",
+    volumeTraded: "1M+",
+    accuracyRate: "95%",
+    marketCoverage: "iPhone",
   },
 }
 
 const defaultBlogPosts: BlogPost[] = [
   {
     id: 1,
-    title: "AI Trading Strategies for 2024",
+    title: "Understanding Chart Patterns: A Beginner's Guide",
     excerpt:
-      "Discover the latest AI-powered trading strategies that are revolutionizing the financial markets and how you can implement them in your trading routine.",
-    content: `# AI Trading Strategies for 2024
+      "Learn the most common chart patterns that every trader should know, from triangles to head and shoulders formations.",
+    content: `# Understanding Chart Patterns: A Beginner's Guide
 
-The world of trading is rapidly evolving, and artificial intelligence is at the forefront of this transformation. In 2024, we're seeing unprecedented developments in AI-powered trading strategies that are changing how both institutional and retail investors approach the markets.
+Chart patterns are one of the fundamental tools in technical analysis. They help traders identify potential price movements and make informed decisions about when to buy or sell stocks.
 
-## Key AI Trading Strategies
+## What Are Chart Patterns?
 
-### 1. Machine Learning Pattern Recognition
-Advanced algorithms can now identify complex patterns in market data that human traders might miss. These systems analyze:
-- Historical price movements
-- Volume patterns
-- Market sentiment indicators
-- News and social media sentiment
+Chart patterns are formations created by the price movements of stocks over time. These patterns often repeat themselves and can provide insights into future price direction.
 
-### 2. Predictive Analytics
-AI models use vast amounts of data to predict future market movements with increasing accuracy:
-- Economic indicators
-- Company fundamentals
-- Technical analysis
-- Global events impact
+## Common Chart Patterns
 
-### 3. Risk Management Automation
-AI-powered risk management systems can:
-- Automatically adjust position sizes
-- Set dynamic stop-losses
-- Diversify portfolios in real-time
-- Monitor correlation risks
+### 1. Triangle Patterns
+Triangle patterns form when the price creates a series of lower highs and higher lows, converging toward a point.
 
-## Getting Started with AI Trading
+### 2. Head and Shoulders
+This pattern consists of three peaks, with the middle peak being the highest (the head) and the two outer peaks (shoulders) being roughly equal in height.
 
-If you're interested in incorporating AI into your trading strategy, consider these steps:
+### 3. Support and Resistance
+Support levels are price points where a stock tends to find buying interest, while resistance levels are where selling pressure typically emerges.
 
-1. **Education**: Learn about machine learning and its applications in finance
-2. **Start Small**: Begin with paper trading or small positions
-3. **Use Established Platforms**: Consider platforms like Stocx AI that offer proven AI trading tools
-4. **Monitor Performance**: Track your AI-assisted trades vs. traditional methods
+## How Stocx AI Helps
 
-## The Future of AI Trading
+With Stocx AI, you can simply take a screenshot of any chart and get instant explanations of these patterns. The app identifies formations and explains their significance in simple terms.
 
-As we move through 2024, we expect to see:
-- More sophisticated neural networks
-- Better integration with real-time data
-- Improved natural language processing for news analysis
-- Enhanced risk management capabilities
+## Getting Started
 
-## Conclusion
+1. Download Stocx AI from the App Store
+2. Take a screenshot of a stock chart
+3. Upload it to the app
+4. Get instant AI-powered analysis
 
-AI trading strategies are not just the future—they're the present. As these technologies continue to evolve, traders who adapt and integrate AI into their strategies will have a significant advantage in the markets.
-
-Remember, while AI can provide powerful insights, it's important to understand the technology and maintain proper risk management practices.`,
+Learning chart patterns has never been easier!`,
     status: "published",
     author: "Stocx AI Team",
     date: "2024-01-15",
     readTime: "5 min read",
-    tags: ["AI", "Trading", "Strategies"],
+    tags: ["Chart Patterns", "Technical Analysis", "Beginner"],
     featuredImage: "/placeholder.jpg",
     views: 1250,
   },
   {
     id: 2,
-    title: "Market Analysis: Tech Stocks Outlook",
+    title: "Support and Resistance: The Foundation of Technical Analysis",
     excerpt:
-      "An in-depth analysis of technology stocks and their potential performance in the coming quarter, including key indicators to watch.",
-    content: `# Market Analysis: Tech Stocks Outlook
+      "Master the concepts of support and resistance levels and learn how to identify them using AI-powered chart analysis.",
+    content: `# Support and Resistance: The Foundation of Technical Analysis
 
-Technology stocks have been showing interesting patterns lately, and as we move into the new quarter, there are several key indicators that traders should be watching closely.
+Support and resistance are arguably the most important concepts in technical analysis. Understanding these levels can significantly improve your trading decisions.
 
-## Current Market Conditions
+## What is Support?
 
-The tech sector has experienced significant volatility in recent months, driven by various factors including:
-- Interest rate changes
-- Regulatory concerns
-- Innovation cycles
-- Global economic conditions
+Support is a price level where a stock tends to find buying interest. When the price approaches this level, buyers step in, preventing further decline.
 
-## Key Stocks to Watch
+## What is Resistance?
 
-### Large Cap Tech
-- **Apple (AAPL)**: Strong fundamentals but facing headwinds
-- **Microsoft (MSFT)**: Cloud growth driving performance
-- **Google (GOOGL)**: AI investments showing promise
+Resistance is the opposite of support - it's a price level where selling pressure typically emerges, preventing the price from rising further.
 
-### Emerging Tech
-- **NVIDIA (NVDA)**: AI boom beneficiary
-- **Tesla (TSLA)**: EV market evolution
-- **Meta (META)**: Metaverse investments
+## Identifying Support and Resistance
 
-## Trading Strategies
+Traditional methods require extensive chart study, but with Stocx AI, you can:
+- Take a screenshot of any chart
+- Get instant identification of key levels
+- Understand the strength of each level
+- Learn why these levels matter
 
-When trading tech stocks, consider:
-1. Earnings season timing
-2. Product launch cycles
-3. Regulatory news impact
-4. Market sentiment shifts
+## Types of Support and Resistance
 
-## Conclusion
+### Horizontal Levels
+These are the most common and easiest to identify.
 
-Tech stocks remain volatile but offer significant opportunities for informed traders using AI-powered analysis tools.`,
+### Trend Lines
+Dynamic support and resistance that move with the trend.
+
+### Moving Averages
+These can act as dynamic support or resistance levels.
+
+## Using Stocx AI for Better Analysis
+
+The app makes it easy to spot these crucial levels and understand their significance for your trading strategy.`,
     status: "published",
     author: "Stocx AI Team",
     date: "2024-01-14",
     readTime: "7 min read",
-    tags: ["Market Analysis", "Tech Stocks", "Outlook"],
+    tags: ["Support", "Resistance", "Technical Analysis"],
     featuredImage: "/placeholder.jpg",
     views: 890,
   },
   {
     id: 3,
-    title: "Risk Management in Volatile Markets",
+    title: "How AI is Revolutionizing Chart Analysis Learning",
     excerpt:
-      "Learn essential risk management techniques to protect your investments during market volatility and uncertain economic conditions.",
-    content: `# Risk Management in Volatile Markets
+      "Discover how artificial intelligence is making technical analysis education more accessible and effective for traders of all levels.",
+    content: `# How AI is Revolutionizing Chart Analysis Learning
 
-Risk management is crucial for successful trading, especially during periods of high market volatility. Here's how to protect your investments while still capitalizing on opportunities.
+The traditional way of learning technical analysis involved years of study, countless books, and extensive practice. AI is changing all of that.
 
-## Understanding Market Volatility
+## The Old Way vs. The New Way
 
-Volatility is a measure of price fluctuations in the market. While it can create opportunities, it also increases risk.
+### Traditional Learning
+- Years of study required
+- Complex textbooks and courses
+- Trial and error approach
+- Steep learning curve
 
-## Key Risk Management Strategies
+### AI-Powered Learning
+- Instant explanations
+- Visual pattern recognition
+- Personalized insights
+- Learn by doing
 
-### 1. Position Sizing
-Never risk more than you can afford to lose on a single trade.
+## How Stocx AI Works
 
-### 2. Stop-Loss Orders
-Set automatic exit points to limit losses.
+Our AI has been trained on millions of chart patterns and can instantly recognize:
+- Trend lines and channels
+- Chart formations
+- Support and resistance levels
+- Volume patterns
+- Price action signals
 
-### 3. Diversification
-Spread risk across different assets and sectors.
+## Benefits of AI-Powered Learning
 
-### 4. Regular Portfolio Review
-Monitor and adjust your positions regularly.
+### 1. Speed
+Learn in minutes what used to take months.
 
-## Using AI for Risk Management
+### 2. Accuracy
+AI doesn't miss patterns or make emotional decisions.
 
-AI tools can help by:
-- Analyzing correlation risks
-- Setting dynamic stop-losses
-- Monitoring market sentiment
-- Providing real-time alerts
+### 3. Accessibility
+Available 24/7 on your iPhone.
 
-## Conclusion
+### 4. Personalization
+The more you use it, the better it gets at helping you learn.
 
-Effective risk management is the foundation of successful trading. Use these strategies to protect your capital while pursuing profits.`,
+## The Future of Trading Education
+
+AI is democratizing access to professional-level chart analysis education. With tools like Stocx AI, anyone can learn to read charts like a pro.
+
+## Getting Started
+
+Ready to experience the future of chart analysis learning? Download Stocx AI today and start your journey toward better trading decisions.`,
     status: "published",
     author: "Stocx AI Team",
     date: "2024-01-13",
     readTime: "6 min read",
-    tags: ["Risk Management", "Volatility", "Investment"],
+    tags: ["AI", "Learning", "Education", "Technology"],
     featuredImage: "/placeholder.jpg",
     views: 2100,
   },
